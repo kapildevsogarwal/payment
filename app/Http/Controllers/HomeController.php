@@ -113,14 +113,14 @@ class HomeController extends Controller
             'password' => Hash::make($request->password),
         ]);
 		
+		$insertId = $user->id;
 		$companyInfo = Company::create([
             'name' => $request->name,
 			'email' => $request->email,
 			'address' => $request->address,
 			'type' => $request->type,
-			'user_id' => $user->id,
+			'user_id'=>$insertId,
 		]);
-		
 		
 		Auth::attempt(['email' =>  $request->email, 'password' => $request->password]);
 		
