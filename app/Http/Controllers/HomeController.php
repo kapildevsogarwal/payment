@@ -29,7 +29,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-       $userlist = User::orderby('id', 'desc')->where('is_admin', '0')->where('user_type', 'user')->paginate(20);
+		$userlist = User::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')->where('users.is_admin', '0')->where('users.user_type', 'user')->orderby('users.id', 'desc')->paginate(20);
+		
 		$isAdmin = User::where('id', Auth::id())->value('is_admin');
 		if($isAdmin==1){
 			return view('home', compact('userlist'));
@@ -104,13 +105,6 @@ class HomeController extends Controller
 		  'catalog_five' => ['nullable','mimes:png,jpg,jpeg,bmp,gif','max:8192'],
        ]);
 		
-		$companyInfo = Company::create([
-            'name' => $request->name,
-			'email' => $request->email,
-			'address' => $request->address,
-			'type' => $request->type,
-		]);
-		
 		$user =  User::create([
             'name' => $request->name,
 			'email' =>  $request->email,
@@ -118,6 +112,16 @@ class HomeController extends Controller
 			'user_type' => 'company',
             'password' => Hash::make($request->password),
         ]);
+		
+		$companyInfo = Company::create([
+            'name' => $request->name,
+			'email' => $request->email,
+			'address' => $request->address,
+			'type' => $request->type,
+			'user_id' => $user->id,
+		]);
+		
+		
 		Auth::attempt(['email' =>  $request->email, 'password' => $request->password]);
 		
 		

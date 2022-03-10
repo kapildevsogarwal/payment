@@ -47,6 +47,6 @@ Route::post('cart/make-payment', [App\Http\Controllers\HomeController::class, 'm
 Route::get('/company/add', [App\Http\Controllers\HomeController::class, 'companyAdd'])->name('company.add');
 Route::post('company/store', [App\Http\Controllers\HomeController::class, 'companySave'])->name('company.store');
 Route::get('/company', [App\Http\Controllers\HomeController::class, 'listCompany'])->name('company.list');
-Route::post('company/details/{id}', [App\Http\Controllers\HomeController::class, 'showCompany'])->name('company.details');
+Route::get('company/details/{id}', [App\Http\Controllers\HomeController::class, 'showCompany'])->name('company.details');
 Route::resource('home', HomeController::class);
 
