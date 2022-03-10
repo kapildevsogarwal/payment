@@ -17,18 +17,20 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header"><h2>{{ __('Register') }}</h2></div>
-			 @if ($errors->any())
-				 @foreach ($errors->all() as $error)
-					 <div>{{$error}}</div>
+			 @if ($errors->any)
+				@foreach ($errors->all() as $error)
+					<div class="alert alert-danger" role="alert">
+					  {{$error}}
+					</div>
 				 @endforeach
 			 @endif
 
                 <div class="card-body">
-                    <form class="row g-3" method="POST" action="{{ route('register') }}">
+                    <form class="row g-3" method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
 					  @csrf
 						<div class="col-md-6" style="padding-bottom: 15px;">
-							<label for="username" class="form-label" style="font-weight:800;">Username</label>
-							<input id="username" type="text" class="form-control @error('name') is-invalid @enderror" name="username" value="{{ old('name') }}" required autocomplete="name" autofocus>
+							<label for="name" class="form-label" style="font-weight:800;">Username</label>
+							<input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 							 @error('name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -88,7 +90,12 @@
 						</div>
 						<div class="col-md-6" style="padding-bottom: 15px;">
 							<label for="user_photo" class="form-label" style="font-weight:800;">Upload Photo</label>
-							<input class="form-control-file" id="user_photo" type="file">
+							<input name="user_photo" class="form-control-file" id="user_photo" type="file" required>
+							 @error('user_photo')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                             @enderror
 						</div>
 						<div class="col-md-6" style="padding-bottom: 15px;">
 							<label for="address" class="form-label" style="font-weight:800;">Address</label>
@@ -101,11 +108,11 @@
 						</div>
 						<div class="col-md-6" style="padding-bottom: 15px;">
 							<label for="aadhar_card" class="form-label" style="font-weight:800;">Upload aadharcard upper side</label>
-							<input class="form-control-file" id="aadhar_card" type="file">
+							<input class="form-control-file" id="aadhar_card" name="aadhar_card" type="file" >
 						</div>
 						<div class="col-md-6" style="padding-bottom: 15px;">
 							<label for="mother_name" class="form-label" style="font-weight:800;">Mother Name</label>
-							<input id="mother_name" type="text" class="form-control " name="mother_name" value="{{ old('mother_name') }}" required  >
+							<input id="mother_name" type="text" class="form-control" name="mother_name" value="{{ old('mother_name') }}" required  >
 							@error('mother_name')
 								<span class="invalid-feedback" role="alert">
 									<strong>{{ $message }}</strong>
@@ -114,7 +121,7 @@
 						</div>
 						<div class="col-md-6" style="padding-bottom: 15px;">
 							<label for="aadhar_card_back" class="form-label" style="font-weight:800;">Upload aadharcard back side</label>
-							<input class="form-control-file" name="aadhar_card_back" id="aadhar_card_back" type="file">
+							<input class="form-control-file" name="aadhar_card_back" id="aadhar_card_back" type="file" >
 						</div>
 						<div class="col-md-6" style="padding-bottom: 15px;">
 							<label for="father_name" class="form-label" style="font-weight:800;">Father Name</label>
@@ -140,7 +147,7 @@
 						</div>
 						<div class="col-md-4" style="padding-bottom: 15px;">
 							<label for="tenth_percentage" class="form-label" style="font-weight:800;">10th Percentage %</label>
-							<input id="tenth_percentage" type="text" name="tenth_percentage" class="form-control "  value="{{ old('tenth_percentage') }}"   >
+							<input id="tenth_percentage" type="text" name="tenth_percentage" class="form-control allow_decimal"  value="{{ old('tenth_percentage') }}"   >
 						</div>
 						<div class="col-md-4" style="padding-bottom: 15px;">
 							<label for="twelth_board_name" class="form-label" style="font-weight:800;">12th Board Name</label>
@@ -154,7 +161,7 @@
 						</div>
 						<div class="col-md-4" style="padding-bottom: 15px;">
 							<label for="twelth_percentage" class="form-label" style="font-weight:800;">12th Percentage %</label>
-							<input id="twelth_percentage" type="text" name="twelth_percentage" class="form-control "  value="{{ old('twelth_percentage') }}"   >
+							<input id="twelth_percentage" type="text" name="twelth_percentage" class="form-control allow_decimal"  value="{{ old('twelth_percentage') }}"   >
 						</div>
 						<div class="col-md-4" style="padding-bottom: 15px;">
 							<label for="degree_diploma" class="form-label" style="font-weight:800;">Degree, Diplomas</label>
@@ -167,7 +174,7 @@
 						</div>
 						<div class="col-md-4" style="padding-bottom: 15px;">
 							<label for="degree_diploma_percentage" class="form-label" style="font-weight:800;">Percentage %</label>
-							<input id="degree_diploma_percentage" type="text" name="degree_diploma_percentage" class="form-control "  value="{{ old('degree_diploma_percentage') }}"   >
+							<input id="degree_diploma_percentage" type="text" name="degree_diploma_percentage" class="form-control allow_decimal"  value="{{ old('degree_diploma_percentage') }}"   >
 						</div>
 						<div class="col-md-6 offset-md-5">
                                 <button type="submit" class="btn btn-primary">
@@ -241,4 +248,34 @@
         </div>
     </div>
 </div>
+<script>
+	(function($) {
+		$.fn.inputFilter = function(inputFilter) {
+			return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function() {
+				if (inputFilter(this.value)) {
+					this.oldValue = this.value;
+					this.oldSelectionStart = this.selectionStart;
+					this.oldSelectionEnd = this.selectionEnd;
+				}
+				else if (this.hasOwnProperty("oldValue")) {
+					this.value = this.oldValue;
+					this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+				}
+				else {
+					this.value = "";
+				}
+			});
+		};
+	}(jQuery));
+
+	// Allow numeric only
+	$(".allow_numeric_only").inputFilter(function(value) {
+		 return /^\d*$/.test(value);
+	});
+
+	// allow decimal only
+	$(".allow_decimal").inputFilter(function(value) {
+	   return /^-?\d*[.]?\d*$/.test(value);
+	});
+</script>
 @endsection
