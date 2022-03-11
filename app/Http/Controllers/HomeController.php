@@ -29,15 +29,25 @@ class HomeController extends Controller
      */
     public function index()
     {
-		$userlist = User::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')->where('users.is_admin', '0')->where('users.user_type', 'user')->orderby('users.id', 'desc')->paginate(20);
+		$userlist = User::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')->where('users.is_admin', '0')->where('users.user_type', 'user')->select(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','subscriptions.stripe_status','subscriptions.created_at'])->orderby('users.id', 'desc')->paginate(20);
 		
-		$isAdmin = User::where('id', Auth::id())->value('is_admin');
-		if($isAdmin==1){
+		$userObj = User::where('id', Auth::id())->first(['is_admin','user_type']);
+		$adminFlag = $userObj->is_admin;
+		$varUserType = $userObj->user_type;
+		
+		if($adminFlag==1){
 			return view('home', compact('userlist'));
 		}
-		else{
+		else if($userObj->user_type == 'company'){
+			return view('subscription.company');
+		}
+		else if($userObj->user_type == 'user'){
 			return view('subscription.create');
 		}
+		else{
+			
+		}
+		
     }
 	
 	/**
@@ -47,14 +57,15 @@ class HomeController extends Controller
      */
     public function listCompany()
     {
-		$companylist = Company::orderby('id', 'desc')->paginate(20);
+			
+		$companylist = Company::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'company_info.user_id')->orderby('company_info.id', 'desc')->select(['company_info.id','company_info.name', 'company_info.user_id','company_info.email','company_info.address','company_info.type','company_info.catalog_first','company_info.catalog_second','company_info.catalog_third','company_info.catalog_four','company_info.catalog_five','subscriptions.stripe_status','subscriptions.created_at'])->paginate(20);	
 		
 		$isAdmin = User::where('id', Auth::id())->value('is_admin');
 		if($isAdmin==1){
 			return view('company.list', compact('companylist'));
 		}
 		else{
-			return view('payment');
+			return abort(403, 'Unauthorized action.');
 		}
     }
 	
@@ -66,7 +77,7 @@ class HomeController extends Controller
      */
     public function show($id)
     {
-		$userDetails = User::where('id',$id)->first();
+		$userDetails = User::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')->where('users.id',$id)->where('users.is_admin', '0')->where('users.user_type', 'user')->first(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','subscriptions.stripe_status','subscriptions.created_at']);
         return view('home.details', compact('userDetails'));
     }
 	
@@ -78,7 +89,7 @@ class HomeController extends Controller
      */
     public function showCompany($id)
     {
-		$companyDetails = Company::where('id',$id)->first();
+		$companyDetails = Company::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'company_info.user_id')->orderby('company_info.id', 'desc')->where('company_info.id',$id)->first(['company_info.id','company_info.name', 'company_info.user_id','company_info.email','company_info.address','company_info.type','company_info.catalog_first','company_info.catalog_second','company_info.catalog_third','company_info.catalog_four','company_info.catalog_five','subscriptions.stripe_status','subscriptions.created_at']);
         return view('company.details', compact('companyDetails'));
     }
 	
@@ -95,7 +106,9 @@ class HomeController extends Controller
 		// Form validation
       $this->validate($request, [
           'name' => ['required', 'string', 'max:255'],
-          'email' => ['required', 'string', 'email', 'max:255'],
+          'company_email' => ['required', 'string', 'email', 'max:255'],
+		  'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+          'password' => ['required', 'string', 'min:8', 'confirmed'],
 		  'address' => ['required', 'string', 'max:255'],
 		  'type' => ['required', 'string', 'max:255'],
 		  'catalog_first' => ['nullable','mimes:png,jpg,jpeg,bmp,gif','max:8192'],
@@ -116,14 +129,12 @@ class HomeController extends Controller
 		$insertId = $user->id;
 		$companyInfo = Company::create([
             'name' => $request->name,
-			'email' => $request->email,
+			'email' => $request->company_email,
 			'address' => $request->address,
 			'type' => $request->type,
 			'user_id'=>$insertId,
 		]);
-		
 		Auth::attempt(['email' =>  $request->email, 'password' => $request->password]);
-		
 		
 		if ($request->hasFile('catalog_first')) {
 			$image = $request->file('catalog_first');

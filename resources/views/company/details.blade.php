@@ -44,55 +44,92 @@
                                {{$companyDetails->type}}
                             </td>
                         </tr>
-						
+						<tr>
+                            <td width="20%"><strong>Payment Status</strong></td>
+                            <td>
+                               {{($companyDetails->stripe_status == 'active')?'Active':'Inactive'}}
+                            </td>
+                        </tr>
+						<tr>
+                            <td width="20%"><strong>Payment Time</strong></td>
+                            <td>
+							{{ ($companyDetails->created_at)?date('d M, Y h:i:sa', strtotime($companyDetails->created_at)):'Not Done Yet' }}
+                            </td>
+                        </tr>
                         <tr>
                             <td width="20%"><strong>Company Catalog First</strong></td>
                             <td>
-							@php 
-							$file = public_path('storage/documents/company/'.$companyDetails->id.'/'.$companyDetails->catalog_first)  @endphp
+							@if($companyDetails->catalog_first)
+								@php 
+									$file = public_path('storage/documents/company/'.$companyDetails->id.'/'.$companyDetails->catalog_first);  
+								@endphp
 								@if (File::exists($file))
-								<img src="<?php echo asset('storage/documents/company/'.$companyDetails->id.'/'.$companyDetails->catalog_first)?>" width="150px"  class="user-image" alt="User Image"></img>
+									<img src="<?php echo asset('storage/documents/company/'.$companyDetails->id.'/'.$companyDetails->catalog_first)?>" width="150px"  class="user-image" alt="User Image"></img>
 								@endif
+							@else
+								<span>Not Define</span>
+							@endif
                             </td>
                         </tr>
 						<tr>
                             <td width="20%"><strong>Company Catalog Second</strong></td>
                             <td>
-							@php 
-							$file = public_path('storage/documents/company/'.$companyDetails->id.'/'.$companyDetails->catalog_second)  @endphp
+							@if($companyDetails->catalog_second)
+								@php 
+									$file = public_path('storage/documents/company/'.$companyDetails->id.'/'.$companyDetails->catalog_second);  
+								@endphp
 								@if (File::exists($file))
-								<img src="<?php echo asset('storage/documents/company/'.$companyDetails->id.'/'.$companyDetails->catalog_second)?>" width="150px"  class="user-image" alt="User Image"></img>
+									<img src="<?php echo asset('storage/documents/company/'.$companyDetails->id.'/'.$companyDetails->catalog_second)?>" width="150px"  class="user-image" alt="User Image"></img>
 								@endif
+							@else
+								<span>Not Define</span>
+							@endif
                             </td>
+
                         </tr>
 						<tr>
                             <td width="20%"><strong>Company Catalog Third</strong></td>
                             <td>
-							@php 
-							$file = public_path('storage/documents/company/'.$companyDetails->id.'/'.$companyDetails->catalog_third)  @endphp
+							@if($companyDetails->catalog_third)
+								@php 
+									$file = public_path('storage/documents/company/'.$companyDetails->id.'/'.$companyDetails->catalog_third);  
+								@endphp
 								@if (File::exists($file))
-								<img src="<?php echo asset('storage/documents/company/'.$companyDetails->id.'/'.$companyDetails->catalog_third)?>"  width="150px"  class="user-image" alt="User Image"></img>
+									<img src="<?php echo asset('storage/documents/company/'.$companyDetails->id.'/'.$companyDetails->catalog_third)?>"  width="150px"  class="user-image" alt="User Image"></img>
 								@endif
+							@else
+								<span>Not Define</span>
+							@endif
                             </td>
                         </tr>
 						<tr>
                             <td width="20%"><strong>Company Catalog Four</strong></td>
                             <td>
-							@php 
-							$file = public_path('storage/documents/company/'.$companyDetails->id.'/'.$companyDetails->catalog_four)  @endphp
+							@if($companyDetails->catalog_four)
+								@php 
+									$file = public_path('storage/documents/company/'.$companyDetails->id.'/'.$companyDetails->catalog_four);  
+								@endphp
 								@if (File::exists($file))
-								<img src="<?php echo asset('storage/documents/company/'.$companyDetails->id.'/'.$companyDetails->catalog_four)?>" width="150px"  class="user-image" alt="User Image"></img>
+									<img src="<?php echo asset('storage/documents/company/'.$companyDetails->id.'/'.$companyDetails->catalog_four)?>" width="150px"  class="user-image" alt="User Image"></img>
 								@endif
+							@else
+								<span>Not Define</span>
+							@endif
                             </td>
                         </tr>
 						<tr>
                             <td width="20%"><strong>Company Catalog Five</strong></td>
                             <td>
-							@php 
-							$file = public_path('storage/documents/company/'.$companyDetails->id.'/'.$companyDetails->catalog_five)  @endphp
+							@if($companyDetails->catalog_five)
+								@php 
+									$file = public_path('storage/documents/company/'.$companyDetails->id.'/'.$companyDetails->catalog_five);
+								@endphp
 								@if (File::exists($file))
-								<img src="<?php echo asset('storage/documents/company/'.$companyDetails->id.'/'.$companyDetails->catalog_five)?>" width="150px"  class="user-image" alt="User Image"></img>
+									<img src="<?php echo asset('storage/documents/company/'.$companyDetails->id.'/'.$companyDetails->catalog_five)?>" width="150px"  class="user-image" alt="User Image"></img>
 								@endif
+							@else
+								<span>Not Define</span>
+							@endif
                             </td>
                         </tr>
 						

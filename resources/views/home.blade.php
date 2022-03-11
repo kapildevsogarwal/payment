@@ -18,10 +18,12 @@
                 <table class="table table-striped" id="business-list">
                     <thead>
                         <tr>
-                            <th>Business Name</th>
+                            <th>Name</th>
 							<th>First Name</th>
 							<th>Last Name</th>
                             <th>Email</th>
+							<th>Payment Status</th>
+							<th>Payment Time</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -31,12 +33,15 @@
 							<tr>
 								<td>
 									<a href="{{ route('home.show', [$user->id]) }}" title="View">
+								
 										{{ $user->name }}	
 									</a>
 								</td>
 								<td>{{ $user->first_name }}	</td>
 								<td>{{ $user->last_name }}	</td>
 								<td>{{ $user->email }}	</td>
+								<td>{{ ($user->stripe_status == 'active')?'Active':'Inactive' }}	</td>
+								<td>{{ ($user->created_at)?date('d M, Y h:i:sa', strtotime($user->created_at)):'Not Done' }}</td>
 								<td class="action-icons">
 									<a href="{{ route('home.show', [$user->id]) }}" title="View Detail" class="btn btn-success action-tooltip">
 										<i class="fa fa-eye"></i>

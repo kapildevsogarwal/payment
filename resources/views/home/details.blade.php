@@ -57,6 +57,18 @@
                               {{$userDetails->address}}
                             </td>
                         </tr>
+						<tr>
+                            <td width="20%"><strong>Payment Status</strong></td>
+                            <td>
+								<strong>{{($userDetails->stripe_status == 'active')?'Active':'Inactive'}}</strong>
+                            </td>
+                        </tr>
+						<tr>
+                            <td width="20%"><strong>Payment Time</strong></td>
+                            <td>
+                              <strong>{{ ($userDetails->created_at)?date('d M, Y h:i:sa', strtotime($userDetails->created_at)):'Not Done Yet' }}</strong>
+                            </td>
+                        </tr>
                         <tr>
                             <td width="20%"><strong>Photo</strong></td>
                             <td>

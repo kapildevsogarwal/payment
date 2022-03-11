@@ -22,6 +22,8 @@
 							<th>Email</th>
 							<th>Address</th>
                             <th>Type</th>
+							<th>Payment Status</th>
+							<th>Payment Date</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -36,7 +38,9 @@
 								</td>
 								<td>{{ $company->email }}	</td>
 								<td>{{ $company->address }}	</td>
-								<td>{{ $company->type }}	</td>
+								<td>{{ $company->type }}	{{$company->stripe_status}}</td>
+								<td>{{ ($company->stripe_status == 'active')?'Active':'Inactive' }}	</td>
+								<td>{{ ($company->created_at)?date('d M, Y h:i:sa', strtotime($company->created_at)):'' }}	</td>
 								<td class="action-icons">
 									<a href="{{ route('company.details', [$company->id]) }}" title="View Detail" class="btn btn-success action-tooltip">
 										<i class="fa fa-eye"></i>
