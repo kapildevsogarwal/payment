@@ -29,7 +29,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-		$userlist = User::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')->where('users.is_admin', '0')->where('users.user_type', 'user')->select(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','subscriptions.stripe_status','subscriptions.created_at'])->orderby('users.id', 'desc')->paginate(20);
+		$userlist = User::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')->where('users.is_admin', '0')->where('users.user_type', 'user')->select(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','subscriptions.stripe_status','subscriptions.created_at','users.district','users.experience','users.total_experience'])->orderby('users.id', 'desc')->paginate(20);
 		
 		$userObj = User::where('id', Auth::id())->first(['is_admin','user_type']);
 		$adminFlag = $userObj->is_admin;
@@ -77,7 +77,7 @@ class HomeController extends Controller
      */
     public function show($id)
     {
-		$userDetails = User::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')->where('users.id',$id)->where('users.is_admin', '0')->where('users.user_type', 'user')->first(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','subscriptions.stripe_status','subscriptions.created_at','users.state','users.zipcode']);
+		$userDetails = User::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')->where('users.id',$id)->where('users.is_admin', '0')->where('users.user_type', 'user')->first(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','subscriptions.stripe_status','subscriptions.created_at','users.state','users.zipcode','users.district','users.experience','users.total_experience']);
         return view('home.details', compact('userDetails'));
     }
 	
@@ -89,7 +89,7 @@ class HomeController extends Controller
      */
     public function showCompany($id)
     {
-		$companyDetails = Company::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'company_info.user_id')->orderby('company_info.id', 'desc')->where('company_info.id',$id)->first(['company_info.id','company_info.name', 'company_info.user_id','company_info.email','company_info.address','company_info.type','company_info.catalog_first','company_info.catalog_second','company_info.catalog_third','company_info.catalog_four','company_info.catalog_five','subscriptions.stripe_status','subscriptions.created_at','company_info.gst']);
+		$companyDetails = Company::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'company_info.user_id')->orderby('company_info.id', 'desc')->where('company_info.id',$id)->first(['company_info.id','company_info.name', 'company_info.user_id','company_info.email','company_info.address','company_info.type','company_info.catalog_first','company_info.catalog_second','company_info.catalog_third','company_info.catalog_four','company_info.catalog_five','subscriptions.stripe_status','subscriptions.created_at','company_info.gst','company_info.district','company_info.state','company_info.zip']);
         return view('company.details', compact('companyDetails'));
     }
 	
@@ -110,11 +110,11 @@ class HomeController extends Controller
 				
 				$companyDetails = Company::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'company_info.user_id')
 				->leftJoin('users', 'users.id', '=', 'company_info.user_id')
-				->orderby('company_info.id', 'desc')->where('users.id',Auth::id())->first(['company_info.id','company_info.name', 'company_info.user_id','company_info.email','company_info.address','company_info.type','company_info.catalog_first','company_info.catalog_second','company_info.catalog_third','company_info.catalog_four','company_info.catalog_five','subscriptions.stripe_status','subscriptions.created_at','company_info.gst']);
-        return view('company-profile', compact('companyDetails'));
+				->orderby('company_info.id', 'desc')->where('users.id',Auth::id())->first(['company_info.id','company_info.name', 'company_info.user_id','company_info.email','company_info.address','company_info.type','company_info.catalog_first','company_info.catalog_second','company_info.catalog_third','company_info.catalog_four','company_info.catalog_five','subscriptions.stripe_status','subscriptions.created_at','company_info.gst','company_info.district','company_info.state','company_info.zip']);
+				return view('company-profile', compact('companyDetails'));
 			}
 			else if($userType == 'user'){
-				$userDetails = User::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')->where('users.id',Auth::id())->where('users.is_admin', '0')->where('users.user_type', 'user')->first(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','subscriptions.stripe_status','subscriptions.created_at','users.state','users.zipcode']);
+				$userDetails = User::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')->where('users.id',Auth::id())->where('users.is_admin', '0')->where('users.user_type', 'user')->first(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','subscriptions.stripe_status','subscriptions.created_at','users.state','users.zipcode','district','experience','total_experience']);
 				return view('profile', compact('userDetails'));
 			}
 		}
@@ -132,6 +132,9 @@ class HomeController extends Controller
           'password' => ['required', 'string', 'min:8', 'confirmed'],
 		  'address' => ['required', 'string', 'max:255'],
 		  'gst' => ['required', 'string', 'max:255'],
+		  'district' => ['required', 'string', 'max:255'],
+		  'state' => ['required', 'string', 'max:255'],
+		  'zip' => ['required', 'string', 'max:255'],
 		  'type' => ['required', 'string', 'max:255'],
 		  'catalog_first' => ['nullable','mimes:png,jpg,jpeg,bmp,gif','max:8192'],
 		  'catalog_second' => ['nullable','mimes:png,jpg,jpeg,bmp,gif','max:8192'],
@@ -155,6 +158,9 @@ class HomeController extends Controller
 			'gst' => $request->gst,
 			'address' => $request->address,
 			'type' => $request->type,
+			'district' => $request->district,
+			'state' => $request->state,
+			'zip' => $request->zip,
 			'user_id'=>$insertId,
 		]);
 		Auth::attempt(['email' =>  $request->email, 'password' => $request->password]);

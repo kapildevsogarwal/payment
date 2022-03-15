@@ -66,18 +66,91 @@
                              @enderror
 						</div>
 						<div class="col-md-6" style="padding-bottom: 15px;">
+							<label for="district" class="form-label" style="font-weight:800;">District</label>
+							<input id="district" type="text" class="form-control @error('district') is-invalid @enderror" name="district" value="{{ old('district') }}" required autocomplete="district" autofocus>
+							 @error('district')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                             @enderror
+							
+						</div>
+						<div class="col-md-6" style="padding-bottom: 15px;">
 							<label for="state" class="form-label" style="font-weight:800;">State</label>
-							<input id="state" type="text" class="form-control @error('state') is-invalid @enderror" name="state" value="{{ old('state') }}" required autocomplete="firstname" autofocus>
-							 @error('state')
+							<select id="state" name="state" class="form-control">
+								<option value="Andaman and Nicobar Islandsform-control">Andaman and Nicobar Islandsform-control</option>
+								<option value="Andhra Pradesh">Andhra Pradesh</option>
+								<option value="Arunachal Pradesh">Arunachal Pradesh</option>
+								<option value="Assam">Assam</option>
+								<option value="Bihar">Bihar</option>
+								<option value="Chandigarh">Chandigarh</option>
+								<option value="Chhattisgarh">Chhattisgarh</option>
+								<option value="Dadra and Nagar Haveli">Dadra and Nagar Haveli</option>
+								<option value="Daman and Diu">Daman and Diu</option>
+								<option value="Delhi">Delhi</option>
+								<option value="Goa">Goa</option>
+								<option value="Gujarat">Gujarat</option>
+								<option value="Haryana">Haryana</option>
+								<option value="Himachal Pradesh">Himachal Pradesh</option>
+								<option value="Jammu and Kashmir">Jammu and Kashmir</option>
+								<option value="Jharkhand">Jharkhand</option>
+								<option value="Karnataka">Karnataka</option>
+								<option value="Kerala">Kerala</option>
+								<option value="Ladakh">Ladakh</option>
+								<option value="Lakshadweep">Lakshadweep</option>
+								<option value="Madhya Pradesh">Madhya Pradesh</option>
+								<option value="Maharashtra">Maharashtra</option>
+								<option value="Manipur">Manipur</option>
+								<option value="Meghalaya">Meghalaya</option>
+								<option value="Mizoram">Mizoram</option>
+								<option value="Nagaland">Nagaland</option>
+								<option value="Odisha">Odisha</option>
+								<option value="Puducherry">Puducherry</option>
+								<option value="Punjab">Punjab</option>
+								<option value="Rajasthan">Rajasthan</option>
+								<option value="Sikkim">Sikkim</option>
+								<option value="Tamil Nadu">Tamil Nadu</option>
+								<option value="Telangana">Telangana</option>
+								<option value="Tripura">Tripura</option>
+								<option value="Uttar Pradesh">Uttar Pradesh</option>
+								<option value="Uttarakhand">Uttarakhand</option>
+								<option value="West Bengal">West Bengal</option>
+							</select>
+							
+							
+							
+						</div>
+						<div class="col-md-6" style="padding-bottom: 15px;">
+							<label for="zipcode" class="form-label" style="font-weight:800;">Zipcode</label>
+							<input id="zipcode" type="zipcode" class="form-control @error('zipcode') is-invalid @enderror" name="zipcode" value="{{ old('zipcode') }}" required autocomplete="zipcode" autofocus>
+							 @error('zipcode')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                              @enderror
 						</div>
 						<div class="col-md-6" style="padding-bottom: 15px;">
-							<label for="zipcode" class="form-label" style="font-weight:800;">Zipcode</label>
-							<input id="zipcode" type="zipcode" class="form-control @error('zipcode') is-invalid @enderror" name="zipcode" value="{{ old('zipcode') }}" required autocomplete="zipcode" autofocus>
-							 @error('zipcode')
+							<label for="address" class="form-label" style="font-weight:800;">Address</label>
+							<input id="address" type="text" class="form-control " name="address" value="{{ old('address') }}" required >
+							@error('address')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                             @enderror
+						</div>
+						<div class="col-md-6" style="padding-bottom: 15px;">
+							<label for="experience" class="form-label" style="font-weight:800;">Experience</label>
+							<input id="experience" type="experience" class="form-control @error('experience') is-invalid @enderror" name="experience" value="{{ old('experience') }}" required autocomplete="experience" autofocus>
+							 @error('experience')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                             @enderror
+						</div>
+						<div class="col-md-6" style="padding-bottom: 15px;">
+							<label for="total_experience" class="form-label" style="font-weight:800;">Total Experience</label>
+							<input id="total_experience" type="total_experience" class="form-control @error('total_experience') is-invalid @enderror" name="total_experience" value="{{ old('total_experience') }}" required autocomplete="total_experience" autofocus>
+							 @error('total_experience')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -116,12 +189,12 @@
                              @enderror
 						</div>
 						<div class="col-md-6" style="padding-bottom: 15px;">
-							<label for="address" class="form-label" style="font-weight:800;">Address</label>
-							<input id="address" type="text" class="form-control " name="address" value="{{ old('address') }}" required >
-							@error('address')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+							<label for="mother_name" class="form-label" style="font-weight:800;">Mother Name</label>
+							<input id="mother_name" type="text" class="form-control" name="mother_name" value="{{ old('mother_name') }}" required  >
+							@error('mother_name')
+								<span class="invalid-feedback" role="alert">
+									<strong>{{ $message }}</strong>
+								</span>
                              @enderror
 						</div>
 						<div class="col-md-6" style="padding-bottom: 15px;">
@@ -129,9 +202,9 @@
 							<input class="form-control-file" id="aadhar_card" name="aadhar_card" type="file" >
 						</div>
 						<div class="col-md-6" style="padding-bottom: 15px;">
-							<label for="mother_name" class="form-label" style="font-weight:800;">Mother Name</label>
-							<input id="mother_name" type="text" class="form-control" name="mother_name" value="{{ old('mother_name') }}" required  >
-							@error('mother_name')
+							<label for="father_name" class="form-label" style="font-weight:800;">Father Name</label>
+							<input id="father_name" type="text" name="father_name" class="form-control "  value="{{ old('mother_name') }}" required  >
+							@error('father_name')
 								<span class="invalid-feedback" role="alert">
 									<strong>{{ $message }}</strong>
 								</span>
@@ -142,13 +215,7 @@
 							<input class="form-control-file" name="aadhar_card_back" id="aadhar_card_back" type="file" >
 						</div>
 						<div class="col-md-6" style="padding-bottom: 15px;">
-							<label for="father_name" class="form-label" style="font-weight:800;">Father Name</label>
-							<input id="father_name" type="text" name="father_name" class="form-control "  value="{{ old('mother_name') }}" required  >
-							@error('father_name')
-								<span class="invalid-feedback" role="alert">
-									<strong>{{ $message }}</strong>
-								</span>
-                             @enderror
+							
 						</div>
 						<div class="col-md-6" style="padding-bottom: 15px;">
 							&nbsp;

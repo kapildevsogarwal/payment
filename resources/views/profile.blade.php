@@ -86,6 +86,25 @@
                             </td>
                         </tr>
 						<tr>
+                            <td width="20%"><strong>Experience</strong></td>
+                            <td>
+                               {{$userDetails->experience}}
+                            </td>
+                        </tr>
+						<tr>
+                            <td width="20%"><strong>Total Experience</strong></td>
+                            <td>
+                               {{$userDetails->total_experience}}
+                            </td>
+                        </tr>
+						<tr>
+                            <td width="20%"><strong>District</strong></td>
+                            <td>
+                               {{$userDetails->district}}
+                            </td>
+                        </tr>
+						
+						<tr>
                             <td width="20%"><strong>State</strong></td>
                             <td>
                                {{$userDetails->state}}

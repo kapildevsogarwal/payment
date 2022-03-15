@@ -91,6 +91,24 @@
                             </td>
                         </tr>
 						<tr>
+                            <td width="20%"><strong>District</strong></td>
+                            <td>
+                               {{$companyDetails->district}}
+                            </td>
+                        </tr>
+						<tr>
+                            <td width="20%"><strong>State</strong></td>
+                            <td>
+                               {{$companyDetails->state}}
+                            </td>
+                        </tr>
+						<tr>
+                            <td width="20%"><strong>Zipcode</strong></td>
+                            <td>
+                               {{$companyDetails->zip}}
+                            </td>
+                        </tr>
+						<tr>
                             <td width="20%"><strong>Company GST Number</strong></td>
                             <td>
                                {{$companyDetails->gst}}
