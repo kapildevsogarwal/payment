@@ -102,7 +102,7 @@ class SubscriptionController extends Controller
 					Live Mode price source code for original payment
 					price_1Kd7KMSE3DSWbsl9Wuwi2uhe
 				*/ 
-                $user->newSubscription('test','price_1KdSxFSE3DSWbsl9hOvH0V3D')
+                $user->newSubscription('default','price_1KdSxFSE3DSWbsl9hOvH0V3D')
                     ->create($paymentMethod, [
                     'email' => $user->email,
                 ]);
