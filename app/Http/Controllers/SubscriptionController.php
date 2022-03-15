@@ -92,8 +92,17 @@ class SubscriptionController extends Controller
                     $user->stripe_id,
                     ['source' => $token]
                 );
-				
-                $user->newSubscription('test','price_1KbIsASE3DSWbsl9M2etRYsO')
+				/*
+					Price Source code for testing purpose with 1 rupees
+					price_1KdSxFSE3DSWbsl9hOvH0V3D
+					
+					Test mode price source code for testing API
+					price_1KbIsASE3DSWbsl9M2etRYsO
+					
+					Live Mode price source code for original payment
+					price_1Kd7KMSE3DSWbsl9Wuwi2uhe
+				*/ 
+                $user->newSubscription('test','price_1Kd7KMSE3DSWbsl9Wuwi2uhe')
                     ->create($paymentMethod, [
                     'email' => $user->email,
                 ]);

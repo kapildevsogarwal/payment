@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Laravel</title>
+    <title>Aspes Employment Registration</title>
 
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
      <style>
@@ -47,7 +47,7 @@
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         <h1 class="text-primary text-center">
-          <strong>Aspes student charges</strong>
+          <strong>Aspes Employement Charges</strong>
         </h1>
     </div>
 </div>
@@ -86,7 +86,7 @@
                     </div>
                   </div>
                 <div class="form-group" id="cc-group">
-                    {!! Form::label(null, 'Credit card number:') !!}
+                    {!! Form::label(null, 'Credit/Debit card number:') !!}
                     {!! Form::text(null, null, [
                         'class'                         => 'form-control',
                         'required'                      => 'required',
