@@ -76,6 +76,19 @@
                                 @enderror
                             </div>
                         </div>
+						<div class="form-group row">
+                            <label for="type" class="col-md-4 col-form-label text-md-right">Company GST Number</label>
+
+                            <div class="col-md-6">
+                                <input id="gst" type="text" class="form-control @error('gst') is-invalid @enderror" name="gst" value="{{ old('gst') }}" required autocomplete="gst">
+
+                                @error('gst')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
 						<div class="card">
 							<div class="card-body">
 								<h5 class="card-title">Login Information</h5>

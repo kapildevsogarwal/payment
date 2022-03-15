@@ -66,6 +66,24 @@
                              @enderror
 						</div>
 						<div class="col-md-6" style="padding-bottom: 15px;">
+							<label for="state" class="form-label" style="font-weight:800;">State</label>
+							<input id="state" type="text" class="form-control @error('state') is-invalid @enderror" name="state" value="{{ old('state') }}" required autocomplete="firstname" autofocus>
+							 @error('state')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                             @enderror
+						</div>
+						<div class="col-md-6" style="padding-bottom: 15px;">
+							<label for="zipcode" class="form-label" style="font-weight:800;">Zipcode</label>
+							<input id="zipcode" type="zipcode" class="form-control @error('zipcode') is-invalid @enderror" name="zipcode" value="{{ old('zipcode') }}" required autocomplete="zipcode" autofocus>
+							 @error('zipcode')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                             @enderror
+						</div>
+						<div class="col-md-6" style="padding-bottom: 15px;">
 							<label for="password" class="form-label" style="font-weight:800;">Password</label>
 							<input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="{{ old('password') }}" required autocomplete="password" autofocus>
 							 @error('password')

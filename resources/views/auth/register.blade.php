@@ -65,6 +65,7 @@
                                     </span>
                              @enderror
 						</div>
+
 						<div class="col-md-6" style="padding-bottom: 15px;">
 							<label for="password" class="form-label" style="font-weight:800;">Password</label>
 							<input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="{{ old('password') }}" required autocomplete="password" autofocus>

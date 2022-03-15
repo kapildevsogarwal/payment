@@ -45,7 +45,7 @@
 								<td>
 									{{ ($user->created_at)?date('d M, Y h:i:sa', strtotime($user->created_at)):'Not Done' }}</td>
 								<td class="action-icons">
-									<a href="{{ route('home.shsow', [$user->id]) }}" title="View Detail" class="btn btn-success action-tooltip">
+									<a href="{{ route('home.show', [$user->id]) }}" title="View Detail" class="btn btn-success action-tooltip">
 										<i class="fa fa-eye"></i>
 									</a>
 									{{--<a href="" class="btn btn-info action-tooltip"  title="Files">

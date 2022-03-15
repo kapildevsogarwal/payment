@@ -54,11 +54,10 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
     <div class="panel panel-default credit-card-box">
-        <div class="panel-heading display-table" >
-            <div class="row display-tr" >
-                <strong>Please do your payment</strong>
-            </div>                    
-        </div>
+		<div class="panel-heading bg-light clearfix">
+			<div class="pull-left"><strong>Please do your payment</strong></div>
+			<div class="pull-right font-weight-bold"><a href="{{ route('profile') }}">View Profile</a></div>
+		</div>
         <div class="panel-body">
             <div class="col-md-12">
               {!! Form::open(['url' => route('order.post'), 'data-parsley-validate', 'id' => 'payment-form']) !!}

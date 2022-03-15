@@ -1,22 +1,68 @@
-{{-- resources/views/adminlte/user/dashboard.blade.php --}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Aspes Employment Registration</title>
 
-@extends('layouts.user')
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+     <style>
+        .alert.parsley {
+            margin-top: 5px;
+            margin-bottom: 0px;
+            padding: 10px 15px 10px 15px;
+        }
+        .check .alert {
+            margin-top: 20px;
+        }
+        .credit-card-box .panel-title {
+            display: inline;
+            font-weight: bold;
+        }
+        .credit-card-box .display-td {
+            display: table-cell;
+            vertical-align: middle;
+            width: 100%;
+        }
+        .credit-card-box .display-tr {
+            display: table-row;
+        }
+    </style>
 
-@section('pageTitle', 'Company Detail Information')
-
-@section('content')
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    
+</head>
+<body id="app-layout">
+<nav class="navbar navbar-inverse ">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a href="{{ route('logout') }}" class="navbar-brand">
+        Logout
+      </a>
+    </div>  
+  </div>
+</nav>
 <div class="row">
-
-    <div class="col-xs-12">
-
-        @include('partials.flash-messages')
-
-        <div class="box">
-            <div class="box-header">
-                <h3 class="box-title">Company Detail: <strong>{{($companyDetails->name)?ucwords($companyDetails->name):''}}</strong></h3>
-            </div>
-
+    <div class="col-md-8 col-md-offset-2">
+        <h1 class="text-primary text-center">
+          <strong>Profile Detail</strong>
+        </h1>
+    </div>
+</div>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="panel panel-default credit-card-box">
+		<div class="panel-heading bg-light clearfix">
+			<div class="pull-left">User Detail: <strong>{{($companyDetails->name)?ucwords($companyDetails->name):''}}</strong></div>
+			<div class="pull-right font-weight-bold"><a href="{{ url('/home') }}"><strong>Payment<strong></a></div>
+		</div>
+        
+        <div class="panel-body">
+            <div class="col-md-12">
+              <div class="box">
+           
             <div class="box-body table-responsive">
                 <table class="table table-striped">
                     <tbody>
@@ -148,29 +194,52 @@
 
 			</div>
 		</div>
-	</div>
+            </div>
+        </div>
+    </div>
+    
+  </div>
 </div>
-@endsection
-
-
-@section('header_css')
-    <!-- jvectormap -->
-    <link rel="stylesheet" href="{{ asset('themes/adminlte/bower_components/jvectormap/jquery-jvectormap.css') }}">
-@endsection
-
-@section('footer_assets')
-
-    <!-- Sparkline -->
-    <script src="{{ asset('themes/adminlte/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js') }}"></script>
-    <!-- jvectormap  -->
-    <script src="{{ asset('themes/adminlte/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js') }}"></script>
-    <script src="{{ asset('themes/adminlte/plugins/jvectormap/jquery-jvectormap-world-mill-en.js') }}"></script>
-
-    <!-- ChartJS -->
-    <script src="{{ asset('themes/adminlte/bower_components/chart.js/Chart.js') }}"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="{{ asset('themes/adminlte/dist/js/pages/dashboard2.js') }}"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="{{ asset('themes/adminlte/dist/js/demo.js') }}"></script>
-
-@endsection
+    
+    <script>
+        window.ParsleyConfig = {
+            errorsWrapper: '<div></div>',
+            errorTemplate: '<div class="alert alert-danger parsley" role="alert"></div>',
+            errorClass: 'has-error',
+            successClass: 'has-success'
+        };
+    </script>
+    
+    <script src="//parsleyjs.org/dist/parsley.js"></script>
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script>
+        Stripe.setPublishableKey("{{ config('services.stripe.public_key') }}");
+        jQuery(function($) {
+            $('#payment-form').submit(function(event) {
+                var $form = $(this);
+                $form.parsley().subscribe('parsley:form:validate', function(formInstance) {
+                    formInstance.submitEvent.preventDefault();
+                    alert();
+                    return false;
+                });
+                $form.find('#submitBtn').prop('disabled', true);
+                Stripe.card.createToken($form, stripeResponseHandler);
+                return false;
+            });
+        });
+        function stripeResponseHandler(status, response) {
+            var $form = $('#payment-form');
+            if (response.error) {
+                $form.find('.payment-errors').text(response.error.message);
+                $form.find('.payment-errors').addClass('alert alert-danger');
+                $form.find('#submitBtn').prop('disabled', false);
+                $('#submitBtn').button('reset');
+            } else {
+                var token = response.id;
+                $form.append($('<input type="hidden" name="stripeToken" />').val(token));
+                $form.get(0).submit();
+            }
+        };
+    </script>
+</body>
+</html>

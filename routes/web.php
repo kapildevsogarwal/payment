@@ -43,6 +43,7 @@ Route::post('order-post', [App\Http\Controllers\SubscriptionController::class, '
 Route::post('order-company', [App\Http\Controllers\SubscriptionController::class, 'orderCompany'])->name('order.company');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/profile', [App\Http\Controllers\HomeController::class, 'profile'])->name('profile');
 Route::post('cart/make-payment', [App\Http\Controllers\HomeController::class, 'makeOrderPayment'])->name('cart.make-payment');
 Route::get('/company/add', [App\Http\Controllers\HomeController::class, 'companyAdd'])->name('company.add');
 Route::post('company/store', [App\Http\Controllers\HomeController::class, 'companySave'])->name('company.store');
