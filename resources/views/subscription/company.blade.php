@@ -130,7 +130,7 @@
                     </div>
                   </div>
 				  <div class="col-md-6">
-				<div class="form-group">
+					<div class="form-group">
 					<label class="checkbox mb-0 ">
 					<input type="checkbox" name="agree" value="yes" />I Agree to the
 					&nbsp;<a href="#" target="_blank" data-toggle="modal" data-target="#terms">terms and conditions</a>.&nbsp;
@@ -145,12 +145,16 @@
 									</button>
 								</div>
 								<div class="modal-body">
-									<p style="font-size: 10px;">Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Nulla vitae elit libero, a pharetra augue. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.</p>
-									<p style="font-size: 10px;">Sed posuere consectetur est at lobortis. Nullam quis risus eget urna mollis ornare vel eu leo. Cras mattis consectetur purus sit amet fermentum. Maecenas faucibus mollis interdum.</p>
-									<p style="font-size: 10px;">Curabitur blandit tempus porttitor. Cras mattis consectetur purus sit amet fermentum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec ullamcorper nulla non metus auctor fringilla. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Vestibulum id ligula porta felis euismod semper. Sed posuere consectetur est at lobortis.</p>
-									<p style="font-size: 10px;">Nullam quis risus eget urna mollis ornare vel eu leo. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Etiam porta sem malesuada magna mollis euismod. Maecenas faucibus mollis interdum. Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-
-
+									<p style="font-size: 10px;">This application is a communiction plateform where saver/ supplier/ upholder can find better option.</p>
+									<p style="font-size: 10px;">Your permission is needed to upload your personal & contact details on the portal through this plateform..</p>
+									<p style="font-size: 10px;">Your permission is needed to forward your data according to the need and job capability/business premises by the company .</p>
+									<p style="font-size: 10px;">Company doesn't provide any job gurantee while your job depends when your skill and behaviour.</p>
+									<p style="font-size: 10px;">Your fees will not be refunded as its company's service charge and no legal charges available for this.</p>
+									<p style="font-size: 10px;">Your permission is needed to inform you by call, sms or e-mail by the company.</p>
+									<p style="font-size: 10px;">This is a market plateform where buyer and supplier can behave according to their need.</p>
+									<p style="font-size: 10px;">Our company wants only your communication charges.</p>
+									<p style="font-size: 10px;">We will try to provide your best products and services.</p>
+									<p style="font-size: 10px;">There is no boundation of the company where to buy products and services i.e. its your own right.</p>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-primary" data-dismiss="modal">Okay</button>
