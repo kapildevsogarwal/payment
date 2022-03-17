@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Laravel\Cashier\Exceptions\IncompletePayment;
 Use App\Models\User;
 Use App\Models\CheckSubscription;
 use Stripe;
@@ -24,7 +25,7 @@ class SubscriptionController extends Controller
 	public function companyPost()
     {  
 		if($type = auth()->user()->user_type == 'company'){
-			return view('subscription.company');
+			return view('subscription.form');
 		}
 		else if($type = auth()->user()->user_type == 'user'){
 			return view('subscription.create');
@@ -69,6 +70,24 @@ class SubscriptionController extends Controller
             }
             
     }
+	
+	public function paymentAction(Request $request){ 
+		 $user         = User::where('id', Auth::id())->first();
+        
+        try {
+            $stripeCharge = $user->charge(1, $request->pmethod);
+        } catch (IncompletePayment $exception) {
+            return redirect()->route('cashier.payment',[$exception->payment->id, 'redirect' => url('/payment')]);
+        }
+
+        dd($stripeCharge);
+	}
+	
+	public function showPayment(){
+		return view('subscription.company');
+	}
+
+	
     public function orderCompany(Request $request)
     {	
             $user = auth()->user();
@@ -93,7 +112,7 @@ class SubscriptionController extends Controller
                     ['source' => $token]
                 );
 				/*
-					Price Source code for testing purpose with 1 rupees
+					Live Mode Price Source code for testing purpose with 1 rupees
 					price_1KdSxFSE3DSWbsl9hOvH0V3D
 					
 					Test mode price source code for testing API
@@ -108,7 +127,9 @@ class SubscriptionController extends Controller
                 ]);
 
                 return back()->with('success','Company subscription is completed.');
-            } catch (Exception $e) {
+            }catch (IncompletePayment $exception) {
+				return redirect()->route('cashier.payment',[$exception->payment->id, 'redirect' => route('payment')]);
+			}catch (Exception $e) {
                 return back()->with('success',$e->getMessage());
             }
             
