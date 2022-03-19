@@ -203,7 +203,7 @@
 						</div>
 						<div class="col-md-6" style="padding-bottom: 15px;">
 							<label for="father_name" class="form-label" style="font-weight:800;">Father Name</label>
-							<input id="father_name" type="text" name="father_name" class="form-control "  value="{{ old('mother_name') }}" required  >
+							<input id="father_name" type="text" name="father_name" class="form-control "  value="{{ old('father_name') }}" required  >
 							@error('father_name')
 								<span class="invalid-feedback" role="alert">
 									<strong>{{ $message }}</strong>

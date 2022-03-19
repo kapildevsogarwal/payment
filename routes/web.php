@@ -52,5 +52,10 @@ Route::get('/company/add', [App\Http\Controllers\HomeController::class, 'company
 Route::post('company/store', [App\Http\Controllers\HomeController::class, 'companySave'])->name('company.store');
 Route::get('/company', [App\Http\Controllers\HomeController::class, 'listCompany'])->name('company.list');
 Route::get('company/details/{id}', [App\Http\Controllers\HomeController::class, 'showCompany'])->name('company.details');
+Route::get('profile/{id}/user', [App\Http\Controllers\HomeController::class, 'editProfile'])->name('profile.user');
+Route::get('company/{id}/edit', [App\Http\Controllers\HomeController::class, 'editCompany'])->name('company.edit');
+Route::put('/company/{id}/update', [App\Http\Controllers\HomeController::class, 'companyUpdate'])->name('company.update');
+Route::get('/home/listing', [App\Http\Controllers\HomeController::class, 'index'])->name('home.listing');
+Route::delete('/company/destory/{id}', [App\Http\Controllers\HomeController::class, 'companyDestory'])->name('company.destory');
 Route::resource('home', HomeController::class);
 

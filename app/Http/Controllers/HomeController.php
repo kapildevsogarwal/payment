@@ -8,7 +8,11 @@ use App\Models\Company;
 use App\Models\UserOrder;
 use Auth;
 use Session;
+use DB;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\StoreUserEditRequest;
+use App\Http\Requests\StoreCompanyEditRequest;
+
 
 class HomeController extends Controller
 {
@@ -29,7 +33,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-		$userlist = User::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')->where('users.is_admin', '0')->where('users.user_type', 'user')->select(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','subscriptions.stripe_status','subscriptions.created_at','users.district','users.experience','users.total_experience'])->orderby('users.id', 'desc')->paginate(20);
+		$userlist = User::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')->where('users.is_admin', '0')->where('users.user_type', 'user')->select(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','subscriptions.stripe_status','subscriptions.created_at','users.district','users.experience','users.total_experience','users.user_type'])->orderby('users.id', 'desc')->paginate(20);
 		
 		$userObj = User::where('id', Auth::id())->first(['is_admin','user_type']);
 		$adminFlag = $userObj->is_admin;
@@ -92,7 +96,137 @@ class HomeController extends Controller
 		$companyDetails = Company::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'company_info.user_id')->orderby('company_info.id', 'desc')->where('company_info.id',$id)->first(['company_info.id','company_info.name', 'company_info.user_id','company_info.email','company_info.address','company_info.type','company_info.catalog_first','company_info.catalog_second','company_info.catalog_third','company_info.catalog_four','company_info.catalog_five','subscriptions.stripe_status','subscriptions.created_at','company_info.gst','company_info.district','company_info.state','company_info.zip']);
         return view('company.details', compact('companyDetails'));
     }
+
+
+    public function editProfile($id)
+    {
+		if($id > 0){
+			$userObj = User::where('id', Auth::id())->first(['is_admin','user_type']);
+			$adminFlag = $userObj->is_admin;
+			if($adminFlag == 1){
+				$user = User::findOrFail($id);
+				return view('home.edit-profile', compact('user'));
+			}
+			else{
+				return abort(403, 'Unauthorized action.');
+			}
+		}
+		else{
+			return abort(403, 'Unauthorized action.');
+		}
+    }
+
+
+    public function editCompany($id)
+    {
+		if($id > 0){
+			$userObj = User::where('id', Auth::id())->first(['is_admin','user_type']);
+			$adminFlag = $userObj->is_admin;
+			if($adminFlag == 1){
+				$company = Company::findOrFail($id);
+				return view('company.edit', compact('company'));
+			}
+			else{
+				return abort(403, 'Unauthorized action.');
+			}
+		}
+		else{
+			return abort(403, 'Unauthorized action.');
+		}
+    }
 	
+    public function companyUpdate(StoreCompanyEditRequest $request, $id){
+    	$input = $request->all();
+		
+		$company = Company::find($id);
+        $company->name = $input['name'];
+        $company->address = $input['address'];        
+        $company->zip = $input['zip'];
+        $company->district = $input['district'];
+        $company->state = $input['state'];
+        $company->gst = $input['gst'];
+        $company->type = $input['type'];
+        $company->update();
+
+        if ($request->hasFile('catalog_first')) {
+        	if ($request->hasFile('catalog_first')) {
+	        	$file_path =  public_path('/storage/documents/company/'.$company->id.'/'.$company->catalog_first);
+	        	if(is_file($file_path) && \File::exists($file_path)){ 
+	        		 unlink($file_path); 
+	        	}
+        	}
+
+			$image = $request->file('catalog_first');
+			$name = time().'_avatar.'.$image->getClientOriginalExtension();
+			$destinationPath = public_path('/storage/documents/company/'.$company->id);
+			$image->move($destinationPath, $name);
+			$company->update(['catalog_first'=>$name]);
+		}
+
+		if ($request->hasFile('catalog_second')) {
+        	if ($request->hasFile('catalog_second')) {
+	        	$file_path =  public_path('/storage/documents/company/'.$company->id.'/'.$company->catalog_second);
+	        	if(is_file($file_path) && \File::exists($file_path)){
+	        		 unlink($file_path); 
+	        	}
+        	}
+
+			$image = $request->file('catalog_second');
+			$name = time().'_avatar.'.$image->getClientOriginalExtension();
+			$destinationPath = public_path('/storage/documents/company/'.$company->id);
+			$image->move($destinationPath, $name);
+			$company->update(['catalog_second'=>$name]);
+		}
+
+		if ($request->hasFile('catalog_third')) {
+        	if ($request->hasFile('catalog_third')) {
+	        	$file_path =  public_path('/storage/documents/company/'.$company->id.'/'.$company->catalog_third);
+	        	if(is_file($file_path) && \File::exists($file_path)){ 
+	        		 unlink($file_path); 
+	        	}
+        	}
+
+			$image = $request->file('catalog_third');
+			$name = time().'_avatar.'.$image->getClientOriginalExtension();
+			$destinationPath = public_path('/storage/documents/company/'.$company->id);
+			$image->move($destinationPath, $name);
+			$company->update(['catalog_third'=>$name]);
+		}
+
+		if ($request->hasFile('catalog_four')) {
+        	if ($request->hasFile('catalog_four')) {
+	        	$file_path =  public_path('/storage/documents/company/'.$company->id.'/'.$company->catalog_four);
+	        	if( is_file($file_path) && \File::exists($file_path)){ 
+	        		 unlink($file_path); 
+	        	}
+        	}
+
+			$image = $request->file('catalog_four');
+			$name = time().'_avatar.'.$image->getClientOriginalExtension();
+			$destinationPath = public_path('/storage/documents/company/'.$company->id);
+			$image->move($destinationPath, $name);
+			$company->update(['catalog_four'=>$name]);
+		}
+
+		if ($request->hasFile('catalog_five')) {
+        	if ($request->hasFile('catalog_five')) {
+	        	$file_path =  public_path('/storage/documents/company/'.$company->id.'/'.$company->catalog_five);
+	        	if(is_file($file_path) && \File::exists($file_path)){ 
+	        		 unlink($file_path); 
+	        	}
+        	}
+
+			$image = $request->file('catalog_five');
+			$name = time().'_avatar.'.$image->getClientOriginalExtension();
+			$destinationPath = public_path('/storage/documents/company/'.$company->id);
+			$image->move($destinationPath, $name);
+			$company->update(['catalog_five'=>$name]);
+		}
+
+        return redirect('/company')->with('success', 'Your request has been update successfully');
+    }
+
+
 	public function companyAdd(){
 		if(Auth::id() >0){
 			return redirect('/home');
@@ -207,5 +341,173 @@ class HomeController extends Controller
 		
 		return redirect()->route('subscription.company.order.post')->with('success', 'Your information has been saved successfully!');
 	}
+
+	public function setCustomDate($varDate){
+	    if($varDate!=''){
+	        $varDate = date('Y-m-d', strtotime($varDate));
+
+	        return $varDate;
+	    }
+	    else{
+	        $varDate = date('Y-m-d');
+	    }
+	}
+
+
+	public function update(StoreUserEditRequest $request, $id){
+		$input = $request->except(['password']);		
+		$input['dob'] = $this->setCustomDate($input['dob']);
+		
+		$user = User::find($id);
+        $user->name = $input['name'];
+        $user->first_name = $input['first_name'];
+        $user->last_name = $input['last_name'];
+        $user->dob = $input['dob'];
+        //$user->user_photo = $input['user_photo'];
+        $user->address = $input['address'];
+        //$user->aadhar_card = $input['aadhar_card'];
+        //$user->aadhar_card_back = $input['aadhar_card_back'];
+        $user->father_name = $input['father_name'];
+        $user->mother_name = $input['mother_name'];
+        $user->tenth_board_name = $input['tenth_board_name'];
+        $user->tenth_year_name = $input['tenth_year_name'];
+        $user->tenth_percentage = $input['tenth_percentage'];
+        $user->twelth_board_name = $input['twelth_board_name'];
+        $user->twelth_year_name = $input['twelth_year_name'];
+        $user->twelth_percentage = $input['twelth_percentage'];
+        $user->degree_diploma = $input['degree_diploma'];
+        $user->degree_diploma_year = $input['degree_diploma_year'];
+        $user->degree_diploma_percentage = $input['degree_diploma_percentage'];
+        $user->zipcode = $input['zipcode'];
+        $user->district = $input['district'];
+        $user->state = $input['state'];
+        $user->experience = $input['experience'];
+        $user->total_experience =$input['total_experience'];
+        $user->update();
+
+
+        if ($request->hasFile('user_photo')) {
+        	if ($request->hasFile('user_photo')) {
+	        	$file_path =  public_path('/storage/documents/'.$user->id.'/'.$user->user_photo);
+	        	if(is_file($file_path) && \File::exists($file_path)){ 
+	        		 unlink($file_path); 
+	        	}
+        	}
+
+			$image = $request->file('user_photo');
+			$name = time().'_avatar.'.$image->getClientOriginalExtension();
+			$destinationPath = public_path('/storage/documents/'.$user->id);
+			$image->move($destinationPath, $name);
+			$user->update(['user_photo'=>$name]);
+		}
+		
+		if ($request->hasFile('aadhar_card')) {
+
+			if ($request->hasFile('aadhar_card')) {
+	        	$file_path =  public_path('/storage/documents/'.$user->id.'/'.$user->aadhar_card);
+	        	if(is_file($file_path) && \File::exists($file_path)){ 
+	        		 unlink($file_path); 
+	        	}
+        	}
+
+			$image = $request->file('aadhar_card');
+			$name = time().'_aadhar_front.'.$image->getClientOriginalExtension();
+			$destinationPath = public_path('/storage/documents/'.$user->id);
+			$image->move($destinationPath, $name);
+			$user->update(['aadhar_card'=>$name]);
+		}
+		
+		if ($request->hasFile('aadhar_card_back')) {
+
+			if ($request->hasFile('aadhar_card_back')) {
+	        	$file_path =  public_path('/storage/documents/'.$user->id.'/'.$user->aadhar_card_back);
+	        	if(is_file($file_path) && \File::exists($file_path)){ 
+	        		 unlink($file_path); 
+	        	}
+        	}
+
+			$image = $request->file('aadhar_card_back');
+			$name = time().'_aadhar_card_back.'.$image->getClientOriginalExtension();
+			$destinationPath = public_path('/storage/documents/'.$user->id);
+			$image->move($destinationPath, $name);
+			$user->update(['aadhar_card_back'=>$name]);
+			
+		}
+
+
+        return redirect('/home')->with('success', 'Your request has been update successfully');
+                
+	}
+
+	/**
+     * Remove the specified resource from storage.
+     *
+     * @param  \ASPES\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        
+        DB::beginTransaction();
+        try {
+            // to delete the docus sign related record
+            $objDelete = User::where('id', '=', $id)->delete();
+            DB::commit();
+            return response()->json([
+                'status' => 'success',
+                'payload' => [
+                    'message' => 'Your request has been completed successfully!',
+                    'url' => route('home.listing')
+                ]
+            ], 200);
+        }
+        catch (\Exception $e) {
+           // echo $e->getMessage();die;
+            DB::rollback();
+            return response()->json([
+                'status' => 'failure',
+                'payload' => [
+                    'message' => 'Your request not completed!',
+                    'url' => route('home.listing')
+                ]
+            ], 200);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \APP\Company  $company
+     * @return \Illuminate\Http\Response
+     */
+    public function companyDestory($id)
+    {        
+        DB::beginTransaction();
+        try {
+            // to delete the docus sign related record
+            $objDelete = Company::where('id', '=', $id)->delete();
+            DB::commit();
+            return response()->json([
+                'status' => 'success',
+                'payload' => [
+                    'message' => 'Your request has been completed successfully!',
+                    'url' => route('company.list')
+                ]
+            ], 200);
+        }
+        catch (\Exception $e) {
+           // echo $e->getMessage();die;
+            DB::rollback();
+            return response()->json([
+                'status' => 'failure',
+                'payload' => [
+                    'message' => 'Your request not completed!',
+                    'url' => route('company.list')
+                ]
+            ], 200);
+        }
+    }
+
+
 	
 }

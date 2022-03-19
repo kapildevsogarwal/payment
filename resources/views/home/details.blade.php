@@ -205,5 +205,5 @@
     <script src="{{ asset('themes/adminlte/dist/js/pages/dashboard2.js') }}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('themes/adminlte/dist/js/demo.js') }}"></script>
-
+    
 @endsection
