@@ -2,7 +2,7 @@
 
 @extends('layouts.user')
 
-@section('pageTitle', 'Dashboard')
+@section('pageTitle', 'Student')
 
 @section('content')
 

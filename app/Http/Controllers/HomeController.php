@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Company;
 use App\Models\UserOrder;
+use App\Models\Professional;
 use Auth;
 use Session;
 use DB;
@@ -33,20 +34,23 @@ class HomeController extends Controller
      */
     public function index()
     {
-		$userlist = User::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')->where('users.is_admin', '0')->where('users.user_type', 'user')->select(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','subscriptions.stripe_status','subscriptions.created_at','users.district','users.experience','users.total_experience','users.user_type'])->orderby('users.id', 'desc')->paginate(20);
+		$userlist = User::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')->where('users.is_admin', '0')->where('users.user_type', 'user')->select(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','subscriptions.stripe_status','subscriptions.created_at','users.district','users.experience','users.total_experience','users.user_type','users.referal'])->orderby('users.id', 'desc')->paginate(20);
 		
-		$userObj = User::where('id', Auth::id())->first(['is_admin','user_type']);
+		$userObj = User::where('id', Auth::id())->first(['is_admin','user_type','referal']);
 		$adminFlag = $userObj->is_admin;
 		$varUserType = $userObj->user_type;
-		
+		$referal = $userObj->referal;
 		if($adminFlag==1){
-			return view('home', compact('userlist'));
+			return view('home', compact('userlist','referal'));
 		}
 		else if($userObj->user_type == 'company'){
-			return view('subscription.company');
+			return view('subscription.company',compact('referal'));
 		}
 		else if($userObj->user_type == 'user'){
-			return view('subscription.create');
+			return view('subscription.create',compact('referal'));
+		}
+		else if($userObj->user_type == 'professional'){
+			return view('subscription.professional',compact('referal'));
 		}
 		else{
 			
@@ -94,16 +98,17 @@ class HomeController extends Controller
     public function showCompany($id)
     {
 		$companyDetails = Company::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'company_info.user_id')->orderby('company_info.id', 'desc')->where('company_info.id',$id)->first(['company_info.id','company_info.name', 'company_info.user_id','company_info.email','company_info.address','company_info.type','company_info.catalog_first','company_info.catalog_second','company_info.catalog_third','company_info.catalog_four','company_info.catalog_five','subscriptions.stripe_status','subscriptions.created_at','company_info.gst','company_info.district','company_info.state','company_info.zip']);
+		
         return view('company.details', compact('companyDetails'));
     }
 
 
     public function editProfile($id)
     {
-		if($id > 0){
+		if($id > 0){	
 			$userObj = User::where('id', Auth::id())->first(['is_admin','user_type']);
 			$adminFlag = $userObj->is_admin;
-			if($adminFlag == 1){
+			if($adminFlag == 1 || Auth::id() == $id){
 				$user = User::findOrFail($id);
 				return view('home.edit-profile', compact('user'));
 			}
@@ -120,10 +125,13 @@ class HomeController extends Controller
     public function editCompany($id)
     {
 		if($id > 0){
+			$company = Company::where('id', $id)->first();
+            $userId = $company->user_id;
+
 			$userObj = User::where('id', Auth::id())->first(['is_admin','user_type']);
 			$adminFlag = $userObj->is_admin;
-			if($adminFlag == 1){
-				$company = Company::findOrFail($id);
+			if($adminFlag == 1 || Auth::id()==$userId){
+				//$company = Company::findOrFail($id);
 				return view('company.edit', compact('company'));
 			}
 			else{
@@ -136,6 +144,9 @@ class HomeController extends Controller
     }
 	
     public function companyUpdate(StoreCompanyEditRequest $request, $id){
+    	
+    	$userObj = User::where('id', Auth::id())->first(['is_admin','user_type']);
+		$adminFlag = $userObj->is_admin;
     	$input = $request->all();
 		
 		$company = Company::find($id);
@@ -222,8 +233,12 @@ class HomeController extends Controller
 			$image->move($destinationPath, $name);
 			$company->update(['catalog_five'=>$name]);
 		}
-
-        return redirect('/company')->with('success', 'Your request has been update successfully');
+		if($adminFlag == 1){
+       	 	return redirect('/company')->with('success', 'Your request has been update successfully');
+       	}
+       	else{
+       		return redirect('/profile')->with('success', 'Your request has been update successfully');
+       	}
     }
 
 
@@ -236,20 +251,24 @@ class HomeController extends Controller
 		}
 	}
 	
-	public function profile(){
+	public function profile(){ 
 		if(Auth::id() >0){
-			$userType = User::where('id',Auth::id())->value('user_type');
-			
+			$userType = User::where('id',Auth::id())->value('user_type');			
 			if($userType == 'company'){
-				
 				$companyDetails = Company::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'company_info.user_id')
 				->leftJoin('users', 'users.id', '=', 'company_info.user_id')
-				->orderby('company_info.id', 'desc')->where('users.id',Auth::id())->first(['company_info.id','company_info.name', 'company_info.user_id','company_info.email','company_info.address','company_info.type','company_info.catalog_first','company_info.catalog_second','company_info.catalog_third','company_info.catalog_four','company_info.catalog_five','subscriptions.stripe_status','subscriptions.created_at','company_info.gst','company_info.district','company_info.state','company_info.zip']);
-				return view('company-profile', compact('companyDetails'));
+				->orderby('company_info.id', 'desc')->where('users.id',Auth::id())->first(['company_info.id','company_info.name', 'company_info.user_id','company_info.email','company_info.address','company_info.type','company_info.catalog_first','company_info.catalog_second','company_info.catalog_third','company_info.catalog_four','company_info.catalog_five','subscriptions.stripe_status','subscriptions.created_at','company_info.gst','company_info.district','company_info.state','company_info.zip','users.referal']);
+				return view('company.details', compact('companyDetails'));
 			}
 			else if($userType == 'user'){
-				$userDetails = User::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')->where('users.id',Auth::id())->where('users.is_admin', '0')->where('users.user_type', 'user')->first(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','subscriptions.stripe_status','subscriptions.created_at','users.state','users.zipcode','district','experience','total_experience']);
-				return view('profile', compact('userDetails'));
+				$userDetails = User::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')->where('users.id',Auth::id())->where('users.is_admin', '0')->where('users.user_type', 'user')->first(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','subscriptions.stripe_status','subscriptions.created_at','users.state','users.zipcode','users.referal','district','experience','total_experience']);
+				return view('home.details', compact('userDetails'));
+			}
+			else if($userType == 'professional'){
+				$Details = Professional::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'professional.user_id')
+				->leftJoin('users', 'users.id', '=', 'professional.user_id')
+				->orderby('professional.id', 'desc')->where('users.id',Auth::id())->first(['professional.id','professional.first_name','professional.last_name','professional.father_name','professional.mother_name','professional.address', 'professional.user_id','professional.address','professional.type','professional.description','professional.experience','subscriptions.stripe_status','subscriptions.created_at','professional.district','professional.state','professional.zip','users.email','users.referal']);
+				return view('professional.details', compact('Details'));
 			}
 		}
 		else{
@@ -277,12 +296,14 @@ class HomeController extends Controller
 		  'catalog_five' => ['nullable','mimes:png,jpg,jpeg,bmp,gif','max:8192'],
        ]);
 		
+		$digitNumber = random_int(100000, 999999);
 		$user =  User::create([
             'name' => $request->name,
 			'email' =>  $request->email,
 			'address' => $request->address,
 			'user_type' => 'company',
             'password' => Hash::make($request->password),
+            'referal' => $digitNumber,
         ]);
 		
 		$insertId = $user->id;
@@ -358,6 +379,11 @@ class HomeController extends Controller
 		$input = $request->except(['password']);		
 		$input['dob'] = $this->setCustomDate($input['dob']);
 		
+		$userObj = User::where('id', Auth::id())->first(['is_admin','user_type']);
+		$adminFlag = $userObj->is_admin;
+
+
+
 		$user = User::find($id);
         $user->name = $input['name'];
         $user->first_name = $input['first_name'];
@@ -433,9 +459,12 @@ class HomeController extends Controller
 			$user->update(['aadhar_card_back'=>$name]);
 			
 		}
-
-
-        return redirect('/home')->with('success', 'Your request has been update successfully');
+		if($adminFlag == 1){
+	        return redirect('/home')->with('success', 'Your request has been update successfully');
+	    }
+	    else{
+	    	return redirect('/profile')->with('success', 'Your request has been update successfully');	
+	    }
                 
 	}
 

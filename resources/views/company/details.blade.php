@@ -5,7 +5,19 @@
 @section('pageTitle', 'Company Detail Information')
 
 @section('content')
-
+<div class="row">
+    <div class="col-xs-4 mb-2">
+        @if(\Auth::user()->user_type == 'company')
+            <a href="{{ route('payment') }}" class="btn btn-primary pull-left">
+                <i class="fa fa-pencil mr-1"></i>Get Subscription</a>
+        @endif        
+    </div>
+    <div class="col-xs-8 mb-2">
+        @if(\Auth::user()->user_type == 'company')
+            <a href="{{ route('company.edit', [$companyDetails->id]) }}" class="btn btn-primary pull-right"><i class="fa fa-pencil mr-1"></i>Edit Profile</a>
+        @endif
+    </div>
+</div>
 <div class="row">
 
     <div class="col-xs-12">
@@ -14,7 +26,8 @@
 
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">Company Detail: <strong>{{($companyDetails->name)?ucwords($companyDetails->name):''}}</strong></h3>
+                <h3 class="box-title pull-left">Company Detail: <strong>{{($companyDetails->name)?ucwords($companyDetails->name):''}}</strong></h3>
+                <h3 class="box-title pull-right">Referal Code: <strong>{{ $companyDetails->referal }}</strong></h3>
             </div>
 
             <div class="box-body table-responsive">

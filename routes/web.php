@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfessionalController;
 
 
 /*
@@ -43,7 +44,7 @@ Route::post('order-post', [App\Http\Controllers\SubscriptionController::class, '
 Route::post('order-company', [App\Http\Controllers\SubscriptionController::class, 'orderCompany'])->name('order.company');
 
 Route::get('/payment', [App\Http\Controllers\SubscriptionController::class, 'showPayment'])->name('payment');
-//Route::post('/process', [App\Http\Controllers\SubscriptionController::class, 'paymentAction'])->name('payment_process');
+Route::post('/process', [App\Http\Controllers\SubscriptionController::class, 'paymentAction'])->name('payment_process');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/profile', [App\Http\Controllers\HomeController::class, 'profile'])->name('profile');
@@ -58,4 +59,14 @@ Route::put('/company/{id}/update', [App\Http\Controllers\HomeController::class, 
 Route::get('/home/listing', [App\Http\Controllers\HomeController::class, 'index'])->name('home.listing');
 Route::delete('/company/destory/{id}', [App\Http\Controllers\HomeController::class, 'companyDestory'])->name('company.destory');
 Route::resource('home', HomeController::class);
+
+
+// Professional Detail routes
+Route::get('/professional/create', [ProfessionalController::class, 'create'])->name('professional.create');
+Route::delete('/professional/destory/{id}', [ProfessionalController::class, 'destroy'])->name('professional.destory');
+Route::get('/professional/list', [ProfessionalController::class, 'index'])->name('professional.list');
+Route::resource('professional', ProfessionalController::class);
+
+
+
 

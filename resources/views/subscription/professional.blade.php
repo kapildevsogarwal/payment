@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Aspes Business Registration</title>
+    <title>Aspes Professional Registration</title>
 
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
      <style>
@@ -47,7 +47,7 @@
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         <h1 class="text-primary text-center">
-          <strong>Aspes  Business Charges</strong>
+          <strong>Aspes professional charges</strong>
         </h1>
     </div>
 </div>
@@ -82,7 +82,7 @@
                 <div class="form-group" id="product-group">
                     <div class="alert alert-info alert-block">
 						
-                        <strong>&#8377;999 Inr Charges</strong>
+                        <strong>&#8377;500 Inr Charges</strong>
 					</div>
                 </div>
 				 <div class="row">

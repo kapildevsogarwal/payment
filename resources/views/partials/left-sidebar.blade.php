@@ -16,10 +16,16 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
-            <li  class="active"><a href="{{ url('/home') }}"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
-			<li  class="active"><a href="{{ url('/company') }}"><i class="fa fa-dashboard"></i> <span>Company</span></a></li>
-            {{-- <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Profile</span></a></li>
-            <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Change Password</span></a></li> --}}
+            @if (Auth::user()->is_admin == 1)
+                <li  class="active"><a href="{{ url('/home') }}"><i class="fa fa-users"></i> <span>Users</span></a></li>
+    			<li  class="active"><a href="{{ url('/company') }}"><i class="fa fa-building"></i> <span>Company</span></a></li>
+                <li  class="active"><a href="{{ url('/professional') }}"><i class="fa fa-user-tie"></i> <span>Professional</span></a></li>
+            @else
+                <li  class="active">
+                    <a href="{{ url('/profile') }}"><i class="fa fa-dashboard"></i><span>Profile</span>
+                    </a>
+                </li>
+            @endif
             <li>
                 <a href="{{ route('logout') }}"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

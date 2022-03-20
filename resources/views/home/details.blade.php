@@ -5,7 +5,19 @@
 @section('pageTitle', 'Dashboard')
 
 @section('content')
-
+<div class="row">
+    <div class="col-xs-4 mb-2">
+        @if(\Auth::user()->user_type == 'user')
+            <a href="{{ route('payment') }}" class="btn btn-primary pull-left">
+               Get Subscription</a>
+        @endif        
+    </div>
+    <div class="col-xs-8 mb-2">
+        @if(\Auth::user()->user_type == 'user')
+            <a href="{{ route('profile.user', [$userDetails->id]) }}" class="btn btn-primary pull-right"><i class="fa fa-pencil mr-1"></i>Edit Profile</a>
+        @endif
+    </div>
+</div>
 <div class="row">
 
     <div class="col-xs-12">
@@ -14,7 +26,8 @@
 
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">User Detail: <strong>{{($userDetails->name)?ucwords($userDetails->name):''}}</strong></h3>
+                <h3 class="box-title pull-left">User Detail: <strong>{{($userDetails->name)?ucwords($userDetails->name):''}}</strong></h3>
+                <h3 class="box-title pull-right">Referal Code: <strong>{{ $userDetails->referal }}</strong></h3>
             </div>
 
             <div class="box-body table-responsive">

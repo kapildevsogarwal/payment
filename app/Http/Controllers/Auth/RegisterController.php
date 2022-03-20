@@ -89,6 +89,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $request = request();
+        $digitNumber = random_int(100000, 999999);
         $user =  User::create([
 			'user_type' => 'user',
             'name' => $data['name'],
@@ -99,6 +100,7 @@ class RegisterController extends Controller
 			'district' => $data['district'],
 			'zipcode' => $data['zipcode'],
 			'dob' => $data['dob'],
+			'referal' => $digitNumber,
 			'experience' => $data['experience'],
 			'total_experience' => $data['total_experience'],
 			//'user_photo' => $data['user_photo'],

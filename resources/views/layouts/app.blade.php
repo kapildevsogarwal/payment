@@ -52,7 +52,9 @@
 							<li class="nav-item">
                                 <a class="nav-link" href="{{ route('company.add') }}">Add Company</a>
                             </li>
-							
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('professional.create') }}">Add Professional</a>
+                            </li>
 							{{--
                             @if (Route::has('register'))
                                 <li class="nav-item">

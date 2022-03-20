@@ -2,7 +2,7 @@
 
 @extends('layouts.user')
 
-@section('pageTitle', 'Company')
+@section('pageTitle', 'Professional')
 
 @section('content')
 
@@ -11,47 +11,49 @@
         @include('partials.flash-messages')
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">Company Listing</h3>
+                <h3 class="box-title">Professional Listing</h3>
                 <div class="box-tools"></div>
             </div>
             <div class="box-body table-responsive">
                 <table class="table table-striped" id="business-list">
                     <thead>
                         <tr>
-                            <th>Name</th>
-							<th>Email</th>
+                            <th>First Name</th>
+							<th>Last Email</th>
 							<th>Address</th>
                             <th>Type</th>
+                            <th>Experience</th>
 							<th>Payment Status</th>
 							<th>Payment Date</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-					@if($companylist->count() > 0)
-						@foreach ($companylist as $key => $company)
+					@if($professionalList->count() > 0)
+						@foreach ($professionalList as $key => $professional)
 							<tr>
 								<td>
-									<a href="{{ route('company.details', [$company->id]) }}" title="View">
-										{{ $company->name }}	
+									<a href="{{ route('professional.show', [$professional->id]) }}" title="View">
+										{{ $professional->first_name }}	
 									</a>
 								</td>
-								<td>{{ $company->email }}	</td>
-								<td>{{ $company->address }}	</td>
-								<td>{{ $company->type }}	{{$company->stripe_status}}</td>
-								<td>{{ ($company->stripe_status == 'active')?'Active':'Inactive' }}	</td>
-								<td>{{ ($company->created_at)?date('d M, Y h:i:sa', strtotime($company->created_at)):'' }}	</td>
+								<td>{{ $professional->last_name }}	</td>
+								<td>{{ $professional->address }}	</td>
+								<td>{{ $professional->type }}</td>
+                                <td>{{ $professional->experience }}</td>
+								<td>{{ ($professional->stripe_status == 'active')?'Active':'Inactive' }}	</td>
+								<td>{{ ($professional->created_at)?date('d M, Y h:i:sa', strtotime($professional->created_at)):'' }}	</td>
 								<td class="action-icons">
-									<a href="{{ route('company.details', [$company->id]) }}" title="View Detail" class="btn btn-success action-tooltip">
+									<a href="{{ route('professional.show', [$professional->id]) }}" title="View Detail" class="btn btn-success action-tooltip">
 										<i class="fa fa-eye"></i>
 									</a>
-									<a href="{{ route('company.edit', [$company->id]) }}" title="Edit" class="btn btn-success action-tooltip">
+									<a href="{{ route('professional.edit', [$professional->id]) }}" title="Edit" class="btn btn-success action-tooltip">
                                                 <i class="fa fa-pencil"></i>
                                     </a>
 									{{--<a href="" class="btn btn-info action-tooltip"  title="Files">
 										<i class="fa fa-file-alt"></i>
 									</a>--}}
-									<a href="javascript::void(0);" data-url="{{ route('company.destory', [$company->id]) }}" class="delete-company btn btn-danger action-tooltip" title="Delete">
+									<a href="javascript::void(0);" data-url="{{ route('professional.destory', [$professional->id])}}" class="delete-professional btn btn-danger action-tooltip" title="Delete">
 										<i class="fa fa-trash"></i>
 									</a>
 								</td>
@@ -64,10 +66,10 @@
 								</td>
 							</tr>
 						@endif
-						@if($companylist->count() > 0)
+						@if($professionalList->count() > 0)
 							<tr>
 								<td colspan="3" align="center">
-									{!! $companylist->links() !!}
+									{!! $professionalList->links() !!}
 								</td>
 							</tr>
 						@endif
@@ -121,14 +123,14 @@
 
         $(document).ready(function(){
             // Delete delivery ticket
-            $('body').on('click', '.delete-company', function(e){
+            $('body').on('click', '.delete-professional', function(e){
                 e.preventDefault();
 
                 var dataUrl = $(this).data('url');
 
                 // Remove delivery ticket
                 swal.fire({
-                    title: 'Permanently delete this Company information?',
+                    title: 'Permanently delete this Professional information?',
                     text: "This cannot be undone!",
                     type: 'warning',
                     showCancelButton: true,

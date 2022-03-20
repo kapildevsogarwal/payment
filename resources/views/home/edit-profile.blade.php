@@ -8,9 +8,6 @@
 
 <div class="row">
     <div class="col-md-12">
-        @if($errors->any())
-    {!! implode('', $errors->all('<div>:message</div>')) !!}
-@endif
 		 @include('partials.flash-messages')
         <div class="box box-primary">
             <div class="box-header with-border">

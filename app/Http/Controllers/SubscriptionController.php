@@ -84,7 +84,9 @@ class SubscriptionController extends Controller
 	}
 	
 	public function showPayment(){
-		return view('subscription.company');
+
+        $referal =  User::where('id', Auth::id())->value('referal');
+		return view('subscription.company', compact('referal'));
 	}
 
 	
