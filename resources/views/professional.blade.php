@@ -55,7 +55,7 @@
                                     @csrf
                                     <script src="//checkout.razorpay.com/v1/checkout.js"
                                             data-key="{{ config('services.rozarpay.public_key') }}"
-                                            data-amount="50000"
+                                            data-amount="100"
                                             data-buttontext="Pay 500 INR"
                                             data-name="ItSolutionStuff.com"
                                             data-description="Rozerpay"
