@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfessionalController;
+use App\Http\Controllers\PaymentController;
 
 
 /*
@@ -34,6 +35,12 @@ Route::get('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'
 
 
 Auth::routes();
+
+
+
+//Route::get('payment-razorpay', 'PaymentController@create')->name('paywithrazorpay');
+Route::get('payment-user', [PaymentController::class, 'create'])->name('paywithrazorpay');
+Route::post('payment', [PaymentController::class, 'payment'])->name('payment');
 
 Route::get('/subscription/create', [App\Http\Controllers\SubscriptionController::class, 'index'])->name('subscription.create');
 Route::get('/subscription/company/create', [App\Http\Controllers\SubscriptionController::class, 'companyCreate'])->name('subscription.company.create');

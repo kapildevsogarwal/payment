@@ -29,7 +29,7 @@ class ProfessionalController extends Controller
         $referal = $userObj->referal;
         if($adminFlag == 1){
 
-            $professionalList = Professional::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'professional.user_id')->orderby('professional.id', 'desc')->select(['professional.id','professional.first_name', 'professional.last_name','professional.father_name','professional.mother_name','professional.address','professional.district','professional.state','professional.zip','professional.type','professional.description','professional.experience','subscriptions.stripe_status','subscriptions.created_at'])->paginate(20);
+            $professionalList = Professional::leftJoin('payments', 'payments.user_id', '=', 'professional.user_id')->orderby('professional.id', 'desc')->select(['professional.id','professional.first_name', 'professional.last_name','professional.father_name','professional.mother_name','professional.address','professional.district','professional.state','professional.zip','professional.type','professional.description','professional.experience','payments.payment_id','payments.created_at'])->paginate(20);
 
 
             return view('professional.list',compact('professionalList'));
@@ -129,10 +129,10 @@ class ProfessionalController extends Controller
      */
     public function show($id)
     {
-        $Details = Professional::leftJoin('subscriptions', 'subscriptions.user_id', '=', 'professional.user_id')
+        $Details = Professional::leftJoin('payments', 'payments.user_id', '=', 'professional.user_id')
             ->leftJoin('users', 'users.id', '=', 'professional.user_id')
             ->where('professional.id',$id)
-            ->orderby('professional.id', 'desc')->first(['professional.id','professional.first_name','professional.last_name','professional.father_name','professional.mother_name','professional.address', 'professional.user_id','professional.type','professional.description','professional.experience','subscriptions.stripe_status','subscriptions.created_at','professional.district','professional.state','professional.zip','users.email','users.referal']);
+            ->orderby('professional.id', 'desc')->first(['professional.id','professional.first_name','professional.last_name','professional.father_name','professional.mother_name','professional.address', 'professional.user_id','professional.type','professional.description','professional.experience','payments.payment_id','payments.created_at','professional.district','professional.state','professional.zip','users.email','users.referal']);
         return view('professional.details', compact('Details'));
     }
 

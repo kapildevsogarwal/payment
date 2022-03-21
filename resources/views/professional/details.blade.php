@@ -105,7 +105,7 @@
 						<tr>
                             <td width="20%"><strong>Payment Status</strong></td>
                             <td>
-                               {{($Details->stripe_status == 'active')?'Active':'Inactive'}}
+                               <strong>{{($Details->payment_id != '')?'Active':'Inactive'}}</strong>
                             </td>
                         </tr>
 						<tr>

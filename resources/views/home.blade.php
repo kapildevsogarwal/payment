@@ -41,10 +41,10 @@
 								<td>{{ $user->last_name }}	</td>
 								<td>{{ $user->email }}	</td>
 								<td>
-									{{ ($user->stripe_status == 'active')?'Active':'Inactive' }}	
+                                    {{($user->payment_id != '')?'Active':'Inactive'}}
 								</td>
 								<td>
-									{{ ($user->created_at)?date('d M, Y h:i:sa', strtotime($user->created_at)):'Not Done' }}</td>
+									{{ ($user->pay_time)?date('d M, Y h:i:sa', strtotime($user->pay_time)):'Not Done' }}</td>
 								<td class="action-icons">
 									<a href="{{ route('home.show', [$user->id]) }}" title="View Detail" class="btn btn-success action-tooltip">
 										<i class="fa fa-eye"></i>

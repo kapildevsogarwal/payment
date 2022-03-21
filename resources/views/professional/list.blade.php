@@ -41,7 +41,7 @@
 								<td>{{ $professional->address }}	</td>
 								<td>{{ $professional->type }}</td>
                                 <td>{{ $professional->experience }}</td>
-								<td>{{ ($professional->stripe_status == 'active')?'Active':'Inactive' }}	</td>
+                                <td>{{ ($professional->payment_id != '')?'Active':'Inactive' }}   </td>
 								<td>{{ ($professional->created_at)?date('d M, Y h:i:sa', strtotime($professional->created_at)):'' }}	</td>
 								<td class="action-icons">
 									<a href="{{ route('professional.show', [$professional->id]) }}" title="View Detail" class="btn btn-success action-tooltip">

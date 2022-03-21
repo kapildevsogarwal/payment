@@ -33,5 +33,10 @@ return [
         'public_key'=> env('STRIPE_KEY'),
         'private_key'=> env('STRIPE_SECRET'),
     ],
+	
+	'rozarpay'=>[
+        'public_key'=> env('RAZOR_KEY'),
+        'private_key'=> env('RAZOR_SECRET'),
+    ],
 
 ];

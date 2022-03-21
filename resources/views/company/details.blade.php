@@ -27,7 +27,7 @@
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title pull-left">Company Detail: <strong>{{($companyDetails->name)?ucwords($companyDetails->name):''}}</strong></h3>
-                <h3 class="box-title pull-right">Referal Code: <strong>{{ $companyDetails->referal }}</strong></h3>
+                <h3 class="box-title pull-right">Referal Code: <strong>{{ ($companyDetails->referal)?$companyDetails->referal:'Not Defined' }}</strong></h3>
             </div>
 
             <div class="box-body table-responsive">
@@ -84,7 +84,7 @@
 						<tr>
                             <td width="20%"><strong>Payment Status</strong></td>
                             <td>
-                               {{($companyDetails->stripe_status == 'active')?'Active':'Inactive'}}
+                               {{($companyDetails->payment_id != '')?'Active':'Inactive'}}
                             </td>
                         </tr>
 						<tr>
