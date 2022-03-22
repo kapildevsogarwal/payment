@@ -141,8 +141,6 @@
 										data-name="aspes.com"
 										data-description="Company Charges"
 										data-image="https://aspes.in/images/logo.png"
-										data-prefill.name="name"
-										data-prefill.email="email"
 										data-theme.color="#ff7529">
 								</script>
 							</form>  

@@ -78,7 +78,7 @@
 						<div class="col-md-6" style="padding-bottom: 15px;">
 							<label for="state" class="form-label" style="font-weight:800;">State</label>
 							<select id="state" name="state" class="form-control">
-								<option value="Andaman and Nicobar Islandsform-control">Andaman and Nicobar Islandsform-control</option>
+								<option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
 								<option value="Andhra Pradesh">Andhra Pradesh</option>
 								<option value="Arunachal Pradesh">Arunachal Pradesh</option>
 								<option value="Assam">Assam</option>

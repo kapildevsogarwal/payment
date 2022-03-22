@@ -267,6 +267,7 @@ class HomeController extends Controller
 				->leftJoin('users', 'users.id', '=', 'professional.user_id')
 				->orderby('professional.id', 'desc')->where('users.id',Auth::id())->first(['professional.id','professional.first_name','professional.last_name','professional.father_name','professional.mother_name','professional.address', 'professional.user_id','professional.address','professional.type','professional.description','professional.experience','payments.payment_id','payments.created_at','professional.district','professional.state','professional.zip','users.email','users.referal']);
 				return view('professional.details', compact('Details'));
+
 			}
 		
 	}
@@ -355,7 +356,8 @@ class HomeController extends Controller
 			$companyInfo->update(['catalog_five'=>$name]);
 		}
 		
-		return redirect()->route('subscription.company.order.post')->with('success', 'Your information has been saved successfully!');
+		return redirect('/payment')->with('success', 'Your information has been saved successfully!');	
+		//return redirect()->route('subscription.company.order.post')->with('success', 'Your information has been saved successfully!');
 	}
 
 	public function setCustomDate($varDate){

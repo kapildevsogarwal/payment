@@ -107,7 +107,7 @@
 
                             <div class="col-md-6">
                                 <select id="state" name="state" class="form-control">
-								<option value="Andaman and Nicobar Islandsform-control">Andaman and Nicobar Islandsform-control</option>
+								<option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
 								<option value="Andhra Pradesh">Andhra Pradesh</option>
 								<option value="Arunachal Pradesh">Arunachal Pradesh</option>
 								<option value="Assam">Assam</option>
