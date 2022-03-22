@@ -25,7 +25,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        //$this->middleware(['auth'])->except('companyAdd','companySave');
+        $this->middleware(['auth'])->except('companyAdd','companySave');
     }
 
     /**
@@ -36,27 +36,26 @@ class HomeController extends Controller
     public function index()
     {
 		$userlist = User::leftJoin('payments', 'payments.user_id', '=', 'users.id')->where('users.is_admin', '0')->where('users.user_type', 'user')->select(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','payments.payment_id','payments.created_at as pay_time','users.district','users.experience','users.total_experience','users.user_type','users.referal'])->orderby('users.id', 'desc')->paginate(20);
-		
-		$userObj = User::where('id', Auth::id())->first(['is_admin','user_type','referal']);
-		$adminFlag = $userObj->is_admin;
-		$varUserType = $userObj->user_type;
-		$referal = $userObj->referal;
-		if($adminFlag==1){
-			return view('home', compact('userlist','referal'));
-		}
-		else if($userObj->user_type == 'company'){ 
-			return view('subscription.company',compact('referal'));
-		}
-		else if($userObj->user_type == 'user'){
-			return view('subscription.create',compact('referal'));
-		}
-		else if($userObj->user_type == 'professional'){
-			return view('subscription.professional',compact('referal'));
-		}
-		else{
 			
-		}
-		
+			$userObj = User::where('id', Auth::id())->first(['is_admin','user_type','referal']);
+			$adminFlag = $userObj->is_admin;
+			$varUserType = $userObj->user_type;
+			$referal = $userObj->referal;
+			if($adminFlag==1){
+				return view('home', compact('userlist','referal'));
+			}
+			else if($userObj->user_type == 'company'){ 
+				return view('subscription.company',compact('referal'));
+			}
+			else if($userObj->user_type == 'user'){
+				return view('subscription.create',compact('referal'));
+			}
+			else if($userObj->user_type == 'professional'){
+				return view('subscription.professional',compact('referal'));
+			}
+			else{
+				
+			}
     }
 	
 	/**
@@ -64,9 +63,8 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function listCompany()
-    {
-			
+    public function listCompany(){
+		
 		$companylist = Company::leftJoin('payments', 'payments.user_id', '=', 'company_info.user_id')->orderby('company_info.id', 'desc')->select(['company_info.id','company_info.name', 'company_info.user_id','company_info.email','company_info.address','company_info.type','company_info.catalog_first','company_info.catalog_second','company_info.catalog_third','company_info.catalog_four','company_info.catalog_five','payments.payment_id','payments.created_at'])->paginate(20);	
 		
 		$isAdmin = User::where('id', Auth::id())->value('is_admin');
@@ -253,7 +251,6 @@ class HomeController extends Controller
 	}
 	
 	public function profile(){ 
-		if(Auth::id() >0){
 			$userType = User::where('id',Auth::id())->value('user_type');			
 			if($userType == 'company'){
 				$companyDetails = Company::leftJoin('payments', 'payments.user_id', '=', 'company_info.user_id')
@@ -271,10 +268,7 @@ class HomeController extends Controller
 				->orderby('professional.id', 'desc')->where('users.id',Auth::id())->first(['professional.id','professional.first_name','professional.last_name','professional.father_name','professional.mother_name','professional.address', 'professional.user_id','professional.address','professional.type','professional.description','professional.experience','payments.payment_id','payments.created_at','professional.district','professional.state','professional.zip','users.email','users.referal']);
 				return view('professional.details', compact('Details'));
 			}
-		}
-		else{
-			return abort(403, 'Unauthorized action.');
-		}
+		
 	}
 	
 	public function companySave(Request $request){
