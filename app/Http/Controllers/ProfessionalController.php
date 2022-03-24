@@ -43,7 +43,9 @@ class ProfessionalController extends Controller
             $referal = $userObj->referal;
             if($adminFlag == 1){
 
-                $professionalList = Professional::leftJoin('payments', 'payments.user_id', '=', 'professional.user_id')->orderby('professional.id', 'desc')->select(['professional.id','professional.first_name', 'professional.last_name','professional.father_name','professional.mother_name','professional.address','professional.district','professional.state','professional.zip','professional.type','professional.description','professional.experience','payments.payment_id','payments.created_at'])->paginate(20);
+                $professionalList = Professional::leftJoin('payments', 'payments.user_id', '=', 'professional.user_id')
+                    ->leftjoin('users', 'users.id', '=', 'professional.user_id')
+                    ->orderby('professional.id', 'desc')->select(['professional.id','professional.first_name', 'professional.last_name','professional.father_name','professional.mother_name','professional.address','professional.district','professional.state','professional.zip','professional.type','professional.description','professional.experience','payments.payment_id','payments.created_at','users.referal'])->paginate(20);
 
 
                 return view('professional.list',compact('professionalList'));

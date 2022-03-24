@@ -90,7 +90,7 @@ class HomeController extends Controller
      */
     public function show($id)
     {
-		$userDetails = User::leftJoin('payments', 'payments.user_id', '=', 'users.id')->where('users.id',$id)->where('users.is_admin', '0')->where('users.user_type', 'user')->first(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','payments.payment_id','payments.created_at','users.state','users.zipcode','users.district','users.experience','users.total_experience']);
+		$userDetails = User::leftJoin('payments', 'payments.user_id', '=', 'users.id')->where('users.id',$id)->where('users.is_admin', '0')->where('users.user_type', 'user')->first(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','payments.payment_id','payments.created_at','users.state','users.zipcode','users.district','users.experience','users.total_experience','users.referal']);
         return view('home.details', compact('userDetails'));
     }
 	
@@ -102,7 +102,9 @@ class HomeController extends Controller
      */
     public function showCompany($id)
     {
-		$companyDetails = Company::leftJoin('payments', 'payments.user_id', '=', 'company_info.user_id')->orderby('company_info.id', 'desc')->where('company_info.id',$id)->first(['company_info.id','company_info.name', 'company_info.user_id','company_info.email','company_info.address','company_info.type','company_info.catalog_first','company_info.catalog_second','company_info.catalog_third','company_info.catalog_four','company_info.catalog_five','payments.payment_id','payments.created_at','company_info.gst','company_info.district','company_info.state','company_info.zip']);
+		$companyDetails = Company::leftJoin('payments', 'payments.user_id', '=', 'company_info.user_id')
+			->leftjoin('users', 'users.id', '=', 'company_info.user_id')
+			->orderby('company_info.id', 'desc')->where('company_info.id',$id)->first(['company_info.id','company_info.name', 'company_info.user_id','company_info.email','company_info.address','company_info.type','company_info.catalog_first','company_info.catalog_second','company_info.catalog_third','company_info.catalog_four','company_info.catalog_five','payments.payment_id','payments.created_at','company_info.gst','company_info.district','company_info.state','company_info.zip','users.referal']);
 
         return view('company.details', compact('companyDetails'));
     }
