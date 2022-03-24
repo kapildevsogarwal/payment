@@ -20,6 +20,7 @@
                 <li  class="active"><a href="{{ url('/home') }}"><i class="fa fa-users"></i> <span>Users</span></a></li>
     			<li  class="active"><a href="{{ url('/company') }}"><i class="fa fa-building"></i> <span>Company</span></a></li>
                 <li  class="active"><a href="{{ url('/professional') }}"><i class="fa fa-user-tie"></i> <span>Professional</span></a></li>
+                <li  class="active"><a href="https://aspes.in/visitor"><i class="fa fa-user-tie"></i> <span>Visitors</span></a></li>
             @else
                 <li  class="active">
                     <a href="{{ url('/profile') }}"><i class="fa fa-dashboard"></i><span>Profile</span>

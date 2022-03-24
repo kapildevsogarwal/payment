@@ -27,7 +27,7 @@
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title pull-left">User Detail: <strong>{{($userDetails->name)?ucwords($userDetails->name):''}}</strong></h3>
-                <h3 class="box-title pull-right">Referal Code: <strong>{{ ($userDetails->referal )?$userDetails->referal:'Not Defined'}}</strong></h3>
+                <h3 class="box-title pull-right">Registration Code: <strong>{{ ($userDetails->referal )?$userDetails->referal:'Not Defined'}}</strong></h3>
             </div>
 
             <div class="box-body table-responsive">

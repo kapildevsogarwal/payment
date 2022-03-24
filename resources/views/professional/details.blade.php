@@ -24,7 +24,7 @@
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title pull-left">Professional Detail Name: <strong>{{($Details->first_name)?ucwords($Details->first_name):''}}</strong></h3>
-                <h3 class="box-title pull-right">Referal Code: <strong>{{ $Details->referal }}</strong></h3>
+                <h3 class="box-title pull-right">Registration Code: <strong>{{ $Details->referal }}</strong></h3>
             </div>
 
             <div class="box-body table-responsive">

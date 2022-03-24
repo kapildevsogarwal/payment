@@ -78,7 +78,7 @@
                 <div class="form-group" id="product-group">
                     <div class="alert alert-info alert-block">
                         
-                        <strong>Referal Code: {{$referal}}</strong>
+                        <strong>Registration Code: {{$referal}}</strong>
                     </div>
                 </div>
                 @if($paymentId!=''){
