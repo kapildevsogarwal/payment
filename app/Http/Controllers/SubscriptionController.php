@@ -86,6 +86,7 @@ class SubscriptionController extends Controller
 	public function showPayment(){
 
         $referal =  User::where('id', Auth::id())->value('referal');
+        $paymentId = User::leftJoin('payments', 'payments.user_id', '=', 'users.id')->where('users.id', Auth::id())->value('payments.payment_id');
 		return view('subscription.company', compact('referal'));
 	}
 

@@ -5,7 +5,14 @@
 @section('pageTitle', 'Student')
 
 @section('content')
-
+<div class="row">
+    <div class="col-xs-4 mb-2">
+        <input type="text" class="form-control" id="serach" name="serach" placeholder="Search Company">               
+    </div>
+    <div class="col-xs-8 mb-2">
+       
+    </div>
+</div>
 <div class="row">
     <div class="col-xs-12">
 
@@ -127,6 +134,7 @@
 
 
         $(document).ready(function(){
+            
             // Delete delivery ticket
             $('body').on('click', '.delete-delivery-note', function(e){
                 e.preventDefault();

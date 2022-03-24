@@ -81,18 +81,27 @@
                         <strong>Referal Code: {{$referal}}</strong>
                     </div>
                 </div>
-                <div class="form-group" id="product-group">
-                    <div class="alert alert-info alert-block">
-						
-                        <strong>&#8377;999 Inr Charges</strong>
-					</div>
-                </div>
+                @if($paymentId!=''){
+	                <div class="form-group" id="product-group">
+	                    <div class="alert alert-info alert-block">
+							
+	                        Your Payment has been already done.
+						</div>
+	                </div>
+           		@else
+           			<div class="form-group" id="product-group">
+	                    <div class="alert alert-info alert-block">
+							
+	                        <strong>&#8377;999 Inr Charges</strong>
+						</div>
+	                </div>
+           		@endif
 				 <div class="row">
                     <div class="col-md-12">
                         <span class="payment-errors" style="color: red;margin-top:10px;"></span>
                     </div>
                   </div>
-                
+                @if($paymentId=='')
                 <div class="row">
 				 
                    <div class="col-md-6">
@@ -147,6 +156,7 @@
 						</div>
 					</div>
                 </div>
+                @endif
 			
             </div>
         </div>

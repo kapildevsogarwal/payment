@@ -50,7 +50,7 @@ Route::get('/subscription/company/order-post', [App\Http\Controllers\Subscriptio
 Route::post('order-post', [App\Http\Controllers\SubscriptionController::class, 'orderPost'])->name('order.post');
 Route::post('order-company', [App\Http\Controllers\SubscriptionController::class, 'orderCompany'])->name('order.company');
 
-Route::get('/payment', [App\Http\Controllers\SubscriptionController::class, 'showPayment'])->name('payment');
+Route::get('/payment', [App\Http\Controllers\HomeController::class, 'index'])->name('payment');
 Route::post('/process', [App\Http\Controllers\SubscriptionController::class, 'paymentAction'])->name('payment_process');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

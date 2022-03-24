@@ -34,28 +34,34 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
-    {
-		$userlist = User::leftJoin('payments', 'payments.user_id', '=', 'users.id')->where('users.is_admin', '0')->where('users.user_type', 'user')->select(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','payments.payment_id','payments.created_at as pay_time','users.district','users.experience','users.total_experience','users.user_type','users.referal'])->orderby('users.id', 'desc')->paginate(20);
+    {   
+    	$userObj = User::where('id', Auth::id())->first(['is_admin','user_type','referal']);
+    	$adminFlag = $userObj->is_admin;
+		$varUserType = $userObj->user_type;
+		$referal = $userObj->referal;
+		
+		$userlist = User::leftJoin('payments', 'payments.user_id', '=', 'users.id')
+			->where('users.is_admin', '0')
+			->where('users.user_type', 'user')
+			->select(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','payments.payment_id','payments.created_at as pay_time','users.district','users.experience','users.total_experience','users.user_type','users.referal'])->orderby('users.id', 'desc')->paginate(20);
+		 
+		$paymentId = User::leftJoin('payments', 'payments.user_id', '=', 'users.id')->where('users.id', Auth::id())->value('payments.payment_id');
 			
-			$userObj = User::where('id', Auth::id())->first(['is_admin','user_type','referal']);
-			$adminFlag = $userObj->is_admin;
-			$varUserType = $userObj->user_type;
-			$referal = $userObj->referal;
-			if($adminFlag==1){
-				return view('home', compact('userlist','referal'));
-			}
-			else if($userObj->user_type == 'company'){ 
-				return view('subscription.company',compact('referal'));
-			}
-			else if($userObj->user_type == 'user'){
-				return view('subscription.create',compact('referal'));
-			}
-			else if($userObj->user_type == 'professional'){
-				return view('subscription.professional',compact('referal'));
-			}
-			else{
-				
-			}
+		if($adminFlag==1){
+			return view('home', compact('userlist','referal','paymentId'));
+		}
+		else if($userObj->user_type == 'company'){
+			return view('subscription.company',compact('referal','paymentId'));
+		}
+		else if($userObj->user_type == 'user'){
+			return view('subscription.create',compact('referal','paymentId'));
+		}
+		else if($userObj->user_type == 'professional'){
+			return view('subscription.professional',compact('referal','paymentId'));
+		}
+		else{
+			
+		}
     }
 	
 	/**
