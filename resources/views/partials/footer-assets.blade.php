@@ -17,9 +17,6 @@
 <!-- Bootstrap datettimepicker-->
 <script src="{{ asset('js/bootstrap-datetimepicker.js') }}"></script>
 
-<!--Stripe Payment Gateway -->
-<script src="https://js.stripe.com/v3/"></script>
-
 <script src="{{ asset('js/common.js') }}"></script>
 
 <script type="text/javascript">

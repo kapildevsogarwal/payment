@@ -23,7 +23,7 @@
                 <div class="box-tools"></div>
             </div>
             <div class="box-body table-responsive">
-                <table class="table table-striped" id="business-list">
+                <table class="table table-striped" id="student-list">
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -36,55 +36,7 @@
                         </tr>
                     </thead>
                     <tbody>
-					@if(!empty($userlist) && !$userlist->isEmpty())
-						@foreach ($userlist as $key => $user)
-							<tr>
-								<td>
-									<a href="{{ route('home.show', [$user->id]) }}" title="View">
-										{{ $user->name }}	
-									</a>
-								</td>
-								<td>{{ $user->first_name }}	</td>
-								<td>{{ $user->last_name }}	</td>
-								<td>{{ $user->email }}	</td>
-								<td>
-                                    {{($user->payment_id != '')?'Active':'Inactive'}}
-								</td>
-								<td>
-									{{ ($user->pay_time)?date('d M, Y h:i:sa', strtotime($user->pay_time)):'Not Done' }}</td>
-								<td class="action-icons">
-									<a href="{{ route('home.show', [$user->id]) }}" title="View Detail" class="btn btn-success action-tooltip">
-										<i class="fa fa-eye"></i>
-									</a>
-									<a href="{{ route('profile.user', [$user->id]) }}" title="Edit" class="btn btn-success action-tooltip">
-                                                <i class="fa fa-pencil"></i>
-                                    </a>
-                                     <a href="javascript::void(0);" data-url="{{ route('home.destroy', [$user->id]) }}" class="delete-delivery-note btn btn-danger action-tooltip" title="Delete">
-                                                <i class="fa fa-trash"></i>
-                                            </a>
-									{{--<a href="" class="btn btn-info action-tooltip"  title="Files">
-										<i class="fa fa-file-alt"></i>
-									</a>
-									<a href="javascript::void(0);" data-url="dddd" class="delete-company btn btn-danger action-tooltip" title="Delete">
-										<i class="fa fa-trash"></i>
-									</a>--}}
-								</td>
-							</tr>
-						@endforeach
-						@else
-							<tr>
-								<td colspan="6" align="center">
-									No Record Found
-								</td>
-							</tr>
-						@endif
-						@if(!empty($userlist) && !$userlist->isEmpty())
-							<tr>
-								<td colspan="3" align="center">
-									{!! $userlist->links() !!}
-								</td>
-							</tr>
-						@endif
+					 @include('student-data')
                     </tbody>
                 </table>
                 <input type="hidden" name="hidden_page" id="hidden_page" value="1" />
@@ -98,24 +50,12 @@
 
 
 @section('header_css')
-    <!-- jvectormap -->
+    <!-- jvectormap 
     <link rel="stylesheet" href="{{ asset('themes/adminlte/bower_components/jvectormap/jquery-jvectormap.css') }}">
+	-->
 @endsection
 
 @section('footer_assets')
-
-    <!-- Sparkline -->
-    <script src="{{ asset('themes/adminlte/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js') }}"></script>
-    <!-- jvectormap  -->
-    <script src="{{ asset('themes/adminlte/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js') }}"></script>
-    <script src="{{ asset('themes/adminlte/plugins/jvectormap/jquery-jvectormap-world-mill-en.js') }}"></script>
-
-    <!-- ChartJS -->
-    <script src="{{ asset('themes/adminlte/bower_components/chart.js/Chart.js') }}"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="{{ asset('themes/adminlte/dist/js/pages/dashboard2.js') }}"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="{{ asset('themes/adminlte/dist/js/demo.js') }}"></script>
     <script>
     	function showSA(obj) {
 		    swal.fire({
@@ -187,6 +127,46 @@
                     }
                 });
             });
+
+        $(document).on('keyup', '#serach', function () {
+            var query = $('#serach').val();
+            var page = $('#hidden_page').val();           
+            fetch_data(page, query);
         });
+
+        $(document).on('click', '.pagination a', function (event) { console.log("ddd");
+            event.preventDefault();
+            var page = $(this).attr('href').split('page=')[1];
+            $('#hidden_page').val(page);
+            var query = $('#serach').val();
+            $('li').removeClass('active');
+            $(this).parent().addClass('active');
+            fetch_data(page, query);
+        });
+        
+        $('#insurance_filter').change(function(){
+            var query = $('#serach').val();
+            var page = $('#hidden_page').val();
+            fetch_data(page, query);
+        });
+
+        function fetch_data(page, query) {
+            $.ajax({
+                url: BASE_URL + "student/search-student?page=" + page + "&query=" + query,
+                beforeSend: function () {
+                    $('.full-page-loader').show();
+                },
+                success: function (data)
+                {
+                    $('.full-page-loader').hide();
+                    $("#student-list").find("tbody").html();
+                    $("#student-list").find("tbody").html(data);
+                }
+            });
+        }
+
+
+        });
+
     </script>
 @endsection

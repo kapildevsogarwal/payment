@@ -65,6 +65,7 @@ Route::get('company/{id}/edit', [App\Http\Controllers\HomeController::class, 'ed
 Route::put('/company/{id}/update', [App\Http\Controllers\HomeController::class, 'companyUpdate'])->name('company.update');
 Route::get('/home/listing', [App\Http\Controllers\HomeController::class, 'index'])->name('home.listing');
 Route::delete('/company/destory/{id}', [App\Http\Controllers\HomeController::class, 'companyDestory'])->name('company.destory');
+Route::get('student/search-student', [App\Http\Controllers\HomeController::class, 'studentSearch'])->name('student.searching');
 Route::resource('home', HomeController::class);
 
 
