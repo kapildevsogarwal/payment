@@ -7,7 +7,7 @@
 @section('content')
 <div class="row">
     <div class="col-xs-4 mb-2">
-        <input type="text" class="form-control" id="serach" name="serach" placeholder="Search Company">               
+        <input type="text" class="form-control" id="serach" name="serach" placeholder="Search Student">               
     </div>
     <div class="col-xs-8 mb-2">
        
