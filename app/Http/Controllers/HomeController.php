@@ -43,7 +43,7 @@ class HomeController extends Controller
 		$userlist = User::leftJoin('payments', 'payments.user_id', '=', 'users.id')
 			->where('users.is_admin', '0')
 			->where('users.user_type', 'user')
-			->select(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','payments.payment_id','payments.created_at as pay_time','users.district','users.experience','users.total_experience','users.user_type','users.referal'])->orderby('users.id', 'desc')->paginate(2);
+			->select(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','payments.payment_id','payments.created_at as pay_time','users.district','users.experience','users.total_experience','users.user_type','users.referal'])->orderby('users.id', 'desc')->paginate(config('constant.table_pagination'));
 		 
 		$paymentId = User::leftJoin('payments', 'payments.user_id', '=', 'users.id')->where('users.id', Auth::id())->value('payments.payment_id');
 			
@@ -74,7 +74,7 @@ class HomeController extends Controller
         if($request->ajax()){
             $query = $request->get('query');
             $query = str_replace(" ", "%", $query);
-                $userlist = User::where('name', 'like', '%'.$query.'%')->paginate(config('constant.table_pagination'));
+            $userlist = User::where('name', 'like', '%'.$query.'%')->paginate(config('constant.table_pagination'));
             return view('student-data', compact('userlist'))->render();       
         }
     }
