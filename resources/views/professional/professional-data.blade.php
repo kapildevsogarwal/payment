@@ -30,14 +30,14 @@
 @endforeach
 @else
     <tr>
-        <td colspan="6" align="center">
+        <td colspan="8" align="center">
             No Record Found
         </td>
     </tr>
 @endif
 @if(!empty($professionalList) && !$professionalList->isEmpty())
     <tr>
-        <td colspan="3" align="center">
+        <td colspan="8" align="center">
             {{ $professionalList->links( "pagination::bootstrap-4") }}
         </td>
     </tr>
