@@ -72,13 +72,20 @@ class HomeController extends Controller
     */
     public function studentSearch(Request $request){
         if($request->ajax()){
-            $query = $request->get('query');
-            $query = str_replace(" ", "%", $query);
-            $userlist = User::leftJoin('payments', 'payments.user_id', '=', 'users.id')
+            $getQuery = $request->get('query');
+            $keyword = str_replace(" ", "%", $getQuery);
+            $getlist = User::leftJoin('payments', 'payments.user_id', '=', 'users.id')
 			->where('users.is_admin', '0')
-			->where('users.user_type', 'user')
-			->where('name', 'like', '%'.$query.'%')
-			->select(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','payments.payment_id','payments.created_at as pay_time','users.district','users.experience','users.total_experience','users.user_type','users.referal'])->orderby('users.id', 'desc')->paginate(config('constant.table_pagination'));
+			->where('users.user_type', 'user');
+			if( $keyword!=''){
+				$getlist->where(function($query) use ($keyword){
+					$query->where('users.name', 'LIKE', '%'.$keyword.'%');
+					$query->orWhere('users.first_name', 'LIKE', '%'.$keyword.'%');
+					$query->orWhere('users.last_name', 'LIKE', '%'.$keyword.'%');
+					$query->orWhere('users.email', 'LIKE', '%'.$keyword.'%');
+				});
+			}
+			$userlist = $getlist->select(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','payments.payment_id','payments.created_at as pay_time','users.district','users.experience','users.total_experience','users.user_type','users.referal'])->orderby('users.id', 'desc')->paginate(config('constant.table_pagination'));
             return view('student-data', compact('userlist'))->render();       
         }
     }
@@ -89,7 +96,7 @@ class HomeController extends Controller
      */
     public function listCompany(){
 		
-		$companylist = Company::leftJoin('payments', 'payments.user_id', '=', 'company_info.user_id')->orderby('company_info.id', 'desc')->select(['company_info.id','company_info.name', 'company_info.user_id','company_info.email','company_info.address','company_info.type','company_info.catalog_first','company_info.catalog_second','company_info.catalog_third','company_info.catalog_four','company_info.catalog_five','payments.payment_id','payments.created_at'])->paginate(20);	
+		$companylist = Company::leftJoin('payments', 'payments.user_id', '=', 'company_info.user_id')->orderby('company_info.id', 'desc')->select(['company_info.id','company_info.name', 'company_info.user_id','company_info.email','company_info.address','company_info.type','company_info.catalog_first','company_info.catalog_second','company_info.catalog_third','company_info.catalog_four','company_info.catalog_five','payments.payment_id','payments.created_at'])->paginate(config('constant.table_pagination'));	
 		
 		$isAdmin = User::where('id', Auth::id())->value('is_admin');
 		if($isAdmin==1){
@@ -100,6 +107,29 @@ class HomeController extends Controller
 		}
     }
 	
+    /** 
+        * @param  \Illuminate\Http\Request  $request
+        * Get search by companies data by compay name
+        * @return \Illuminate\Http\Response
+    */
+    public function companySearch(Request $request){
+        if($request->ajax()){
+            $getQuery = $request->get('query');
+            $keyword = str_replace(" ", "%", $getQuery);
+            $getlist = Company::leftJoin('payments', 'payments.user_id', '=', 'company_info.user_id');
+			if( $keyword!=''){
+				$getlist->where(function($query) use ($keyword){
+					$query->where('company_info.name', 'LIKE', '%'.$keyword.'%');
+					$query->orWhere('company_info.email', 'LIKE', '%'.$keyword.'%');
+					$query->orWhere('company_info.type', 'LIKE', '%'.$keyword.'%');
+					$query->orWhere('company_info.address', 'LIKE', '%'.$keyword.'%');
+				});
+			}
+			$companylist = $getlist->orderby('company_info.id', 'desc')->select(['company_info.id','company_info.name', 'company_info.user_id','company_info.email','company_info.address','company_info.type','company_info.catalog_first','company_info.catalog_second','company_info.catalog_third','company_info.catalog_four','company_info.catalog_five','payments.payment_id','payments.created_at'])->paginate(config('constant.table_pagination'));
+            return view('company.company-data', compact('companylist'))->render();       
+        }
+    }
+
 	/**
      * Display the specified resource.
      *

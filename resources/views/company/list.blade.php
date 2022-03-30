@@ -5,7 +5,14 @@
 @section('pageTitle', 'Company')
 
 @section('content')
-
+<div class="row">
+    <div class="col-xs-4 mb-2">
+        <input type="text" class="form-control" id="serach" name="serach" placeholder="Search Company">               
+    </div>
+    <div class="col-xs-8 mb-2">
+       
+    </div>
+</div>
 <div class="row">
     <div class="col-xs-12">
         @include('partials.flash-messages')
@@ -28,49 +35,8 @@
                         </tr>
                     </thead>
                     <tbody>
-					@if($companylist->count() > 0)
-						@foreach ($companylist as $key => $company)
-							<tr>
-								<td>
-									<a href="{{ route('company.details', [$company->id]) }}" title="View">
-										{{ $company->name }}	
-									</a>
-								</td>
-								<td>{{ $company->email }}	</td>
-								<td>{{ $company->address }}	</td>
-								<td>{{ $company->type }}	{{$company->stripe_status}}</td>
-								<td>{{ ($company->payment_id != '')?'Active':'Inactive' }}	</td>
-								<td>{{ ($company->created_at)?date('d M, Y h:i:sa', strtotime($company->created_at)):'' }}	</td>
-								<td class="action-icons">
-									<a href="{{ route('company.details', [$company->id]) }}" title="View Detail" class="btn btn-success action-tooltip">
-										<i class="fa fa-eye"></i>
-									</a>
-									<a href="{{ route('company.edit', [$company->id]) }}" title="Edit" class="btn btn-success action-tooltip">
-                                                <i class="fa fa-pencil"></i>
-                                    </a>
-									{{--<a href="" class="btn btn-info action-tooltip"  title="Files">
-										<i class="fa fa-file-alt"></i>
-									</a>--}}
-									<a href="javascript::void(0);" data-url="{{ route('company.destory', [$company->id]) }}" class="delete-company btn btn-danger action-tooltip" title="Delete">
-										<i class="fa fa-trash"></i>
-									</a>
-								</td>
-							</tr>
-						@endforeach
-						@else
-							<tr>
-								<td colspan="6" align="center">
-									No Record Found
-								</td>
-							</tr>
-						@endif
-						@if($companylist->count() > 0)
-							<tr>
-								<td colspan="3" align="center">
-									{!! $companylist->links() !!}
-								</td>
-							</tr>
-						@endif
+                        @include('company.company-data')
+					   
                     </tbody>
                 </table>
                 <input type="hidden" name="hidden_page" id="hidden_page" value="1" />
@@ -171,6 +137,43 @@
                     }
                 });
             });
+
+            $(document).on('keyup', '#serach', function () {
+                var query = $('#serach').val();
+                var page = $('#hidden_page').val();           
+                fetch_data(page, query);
+            });
+
+            $(document).on('click', '.pagination a', function (event) { console.log("ddd");
+                event.preventDefault();
+                var page = $(this).attr('href').split('page=')[1];
+                $('#hidden_page').val(page);
+                var query = $('#serach').val();
+                $('li').removeClass('active');
+                $(this).parent().addClass('active');
+                fetch_data(page, query);
+            });
+            
+            $('#insurance_filter').change(function(){
+                var query = $('#serach').val();
+                var page = $('#hidden_page').val();
+                fetch_data(page, query);
+            });
+
+            function fetch_data(page, query) {
+                $.ajax({
+                    url: BASE_URL + "company/search-company?page=" + page + "&query=" + query,
+                    beforeSend: function () {
+                        $('.full-page-loader').show();
+                    },
+                    success: function (data)
+                    {
+                        $('.full-page-loader').hide();
+                        $("#business-list").find("tbody").html();
+                        $("#business-list").find("tbody").html(data);
+                    }
+                });
+            }
         });
     </script>
 @endsection

@@ -42,12 +42,9 @@ class ProfessionalController extends Controller
             $adminFlag = $userObj->is_admin;
             $referal = $userObj->referal;
             if($adminFlag == 1){
-
                 $professionalList = Professional::leftJoin('payments', 'payments.user_id', '=', 'professional.user_id')
                     ->leftjoin('users', 'users.id', '=', 'professional.user_id')
-                    ->orderby('professional.id', 'desc')->select(['professional.id','professional.first_name', 'professional.last_name','professional.father_name','professional.mother_name','professional.address','professional.district','professional.state','professional.zip','professional.type','professional.description','professional.experience','payments.payment_id','payments.created_at','users.referal'])->paginate(20);
-
-
+                    ->orderby('professional.id', 'desc')->select(['professional.id','professional.first_name', 'professional.last_name','professional.father_name','professional.mother_name','professional.address','professional.district','professional.state','professional.zip','professional.type','professional.description','professional.experience','payments.payment_id','payments.created_at','users.referal'])->paginate(config('constant.table_pagination'));
                 return view('professional.list',compact('professionalList'));
             }
             else{
@@ -143,9 +140,8 @@ class ProfessionalController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        
-            $Details = Professional::leftJoin('payments', 'payments.user_id', '=', 'professional.user_id')
+    {  
+        $Details = Professional::leftJoin('payments', 'payments.user_id', '=', 'professional.user_id')
                 ->leftJoin('users', 'users.id', '=', 'professional.user_id')
                 ->where('professional.id',$id)
                 ->orderby('professional.id', 'desc')->first(['professional.id','professional.first_name','professional.last_name','professional.father_name','professional.mother_name','professional.address', 'professional.user_id','professional.type','professional.description','professional.experience','payments.payment_id','payments.created_at','professional.district','professional.state','professional.zip','users.email','users.referal']);
@@ -250,6 +246,34 @@ class ProfessionalController extends Controller
                     'url' => route('professional.list')
                 ]
             ], 200);
+        }
+    }
+
+    /** 
+        * @param  \Illuminate\Http\Request  $request
+        * Get search by companies data by compay name
+        * @return \Illuminate\Http\Response
+    */
+    public function professionalSearch(Request $request){
+        if($request->ajax()){
+            $getQuery = $request->get('query');
+            $keyword = str_replace(" ", "%", $getQuery);
+            $getlist = Professional::leftJoin('payments', 'payments.user_id', '=', 'professional.user_id')
+                    ->leftjoin('users', 'users.id', '=', 'professional.user_id');
+            if( $keyword!=''){
+                $getlist->where(function($query) use ($keyword){
+                    $query->where('professional.first_name', 'LIKE', '%'.$keyword.'%');
+                    $query->orWhere('professional.last_name', 'LIKE', '%'.$keyword.'%');
+                    //$query->orWhere('professional.father_name', 'LIKE', '%'.$keyword.'%');
+                    //$query->orWhere('professional.mother_name', 'LIKE', '%'.$keyword.'%');
+                    $query->orWhere('professional.address', 'LIKE', '%'.$keyword.'%');
+                    $query->orWhere('professional.type', 'LIKE', '%'.$keyword.'%');
+                     $query->orWhere('professional.experience', 'LIKE', '%'.$keyword.'%');
+                });
+            }
+
+            $professionalList = $getlist->orderby('professional.id', 'desc')->select(['professional.id','professional.first_name', 'professional.last_name','professional.father_name','professional.mother_name','professional.address','professional.district','professional.state','professional.zip','professional.type','professional.description','professional.experience','payments.payment_id','payments.created_at','users.referal'])->paginate(config('constant.table_pagination'));
+            return view('professional.professional-data', compact('professionalList'))->render();       
         }
     }
 }

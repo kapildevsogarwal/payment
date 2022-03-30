@@ -43,7 +43,6 @@
                         @if(!empty($userlist) && !$userlist->isEmpty())
                             <tr>
                                 <td colspan="7" align="center">
-                                    
                                     {{ $userlist->links( "pagination::bootstrap-4") }}
                                 </td>
                             </tr>

@@ -66,6 +66,7 @@ Route::put('/company/{id}/update', [App\Http\Controllers\HomeController::class, 
 Route::get('/home/listing', [App\Http\Controllers\HomeController::class, 'index'])->name('home.listing');
 Route::delete('/company/destory/{id}', [App\Http\Controllers\HomeController::class, 'companyDestory'])->name('company.destory');
 Route::get('student/search-student', [App\Http\Controllers\HomeController::class, 'studentSearch'])->name('student.searching');
+Route::get('company/search-company', [App\Http\Controllers\HomeController::class, 'companySearch'])->name('company.searching');
 Route::resource('home', HomeController::class);
 
 
@@ -73,6 +74,7 @@ Route::resource('home', HomeController::class);
 Route::get('/professional/create', [ProfessionalController::class, 'create'])->name('professional.create');
 Route::delete('/professional/destory/{id}', [ProfessionalController::class, 'destroy'])->name('professional.destory');
 Route::get('/professional/list', [ProfessionalController::class, 'index'])->name('professional.list');
+Route::get('professional/search-professional', [App\Http\Controllers\ProfessionalController::class, 'professionalSearch'])->name('professional.searching');
 Route::resource('professional', ProfessionalController::class);
 
 

@@ -5,7 +5,14 @@
 @section('pageTitle', 'Professional')
 
 @section('content')
-
+<div class="row">
+    <div class="col-xs-4 mb-2">
+        <input type="text" class="form-control" id="serach" name="serach" placeholder="Search Company">               
+    </div>
+    <div class="col-xs-8 mb-2">
+       
+    </div>
+</div>
 <div class="row">
     <div class="col-xs-12">
         @include('partials.flash-messages')
@@ -15,7 +22,7 @@
                 <div class="box-tools"></div>
             </div>
             <div class="box-body table-responsive">
-                <table class="table table-striped" id="business-list">
+                <table class="table table-striped" id="professional-list">
                     <thead>
                         <tr>
                             <th>First Name</th>
@@ -29,50 +36,7 @@
                         </tr>
                     </thead>
                     <tbody>
-					@if($professionalList->count() > 0)
-						@foreach ($professionalList as $key => $professional)
-							<tr>
-								<td>
-									<a href="{{ route('professional.show', [$professional->id]) }}" title="View">
-										{{ $professional->first_name }}	
-									</a>
-								</td>
-								<td>{{ $professional->last_name }}	</td>
-								<td>{{ $professional->address }}	</td>
-								<td>{{ $professional->type }}</td>
-                                <td>{{ $professional->experience }}</td>
-                                <td>{{ ($professional->payment_id != '')?'Active':'Inactive' }}   </td>
-								<td>{{ ($professional->created_at)?date('d M, Y h:i:sa', strtotime($professional->created_at)):'' }}	</td>
-								<td class="action-icons">
-									<a href="{{ route('professional.show', [$professional->id]) }}" title="View Detail" class="btn btn-success action-tooltip">
-										<i class="fa fa-eye"></i>
-									</a>
-									<a href="{{ route('professional.edit', [$professional->id]) }}" title="Edit" class="btn btn-success action-tooltip">
-                                                <i class="fa fa-pencil"></i>
-                                    </a>
-									{{--<a href="" class="btn btn-info action-tooltip"  title="Files">
-										<i class="fa fa-file-alt"></i>
-									</a>--}}
-									<a href="javascript::void(0);" data-url="{{ route('professional.destory', [$professional->id])}}" class="delete-professional btn btn-danger action-tooltip" title="Delete">
-										<i class="fa fa-trash"></i>
-									</a>
-								</td>
-							</tr>
-						@endforeach
-						@else
-							<tr>
-								<td colspan="6" align="center">
-									No Record Found
-								</td>
-							</tr>
-						@endif
-						@if($professionalList->count() > 0)
-							<tr>
-								<td colspan="3" align="center">
-									{!! $professionalList->links() !!}
-								</td>
-							</tr>
-						@endif
+                         @include('professional.professional-data')
                     </tbody>
                 </table>
                 <input type="hidden" name="hidden_page" id="hidden_page" value="1" />
@@ -173,6 +137,43 @@
                     }
                 });
             });
+
+            $(document).on('keyup', '#serach', function () {
+                var query = $('#serach').val();
+                var page = $('#hidden_page').val();           
+                fetch_data(page, query);
+            });
+
+            $(document).on('click', '.pagination a', function (event) { console.log("ddd");
+                event.preventDefault();
+                var page = $(this).attr('href').split('page=')[1];
+                $('#hidden_page').val(page);
+                var query = $('#serach').val();
+                $('li').removeClass('active');
+                $(this).parent().addClass('active');
+                fetch_data(page, query);
+            });
+        
+            $('#insurance_filter').change(function(){
+                var query = $('#serach').val();
+                var page = $('#hidden_page').val();
+                fetch_data(page, query);
+            });
+
+            function fetch_data(page, query) {
+                $.ajax({
+                    url: BASE_URL + "professional/search-professional?page=" + page + "&query=" + query,
+                    beforeSend: function () {
+                        $('.full-page-loader').show();
+                    },
+                    success: function (data)
+                    {
+                        $('.full-page-loader').hide();
+                        $("#professional-list").find("tbody").html();
+                        $("#professional-list").find("tbody").html(data);
+                    }
+                });
+            }
         });
     </script>
 @endsection
