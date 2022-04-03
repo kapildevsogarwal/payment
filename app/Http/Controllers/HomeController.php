@@ -8,6 +8,7 @@ use App\Models\Company;
 use App\Models\UserOrder;
 use App\Models\Professional;
 use App\Models\Payment;
+use App\Models\CompanyApproval;
 use Auth;
 use Session;
 use DB;
@@ -139,9 +140,25 @@ class HomeController extends Controller
     public function show($id)
     {
 		$userDetails = User::leftJoin('payments', 'payments.user_id', '=', 'users.id')->where('users.id',$id)->where('users.is_admin', '0')->where('users.user_type', 'user')->first(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','payments.payment_id','payments.created_at','users.state','users.zipcode','users.district','users.experience','users.total_experience','users.referal']);
+
         return view('home.details', compact('userDetails'));
     }
 	
+    /**
+     * Display the specified resource.
+     *
+     * @param  \SHR\DeliveryTicket  $deliveryTicket
+     * @return \Illuminate\Http\Response
+     */
+    public function showCompanyApproval($id)
+    {
+    	$companyID = Company::where('user_id', $id)->value('id');
+
+		$userDetails = User::leftJoin('payments', 'payments.user_id', '=', 'users.id')->where('users.id',$id)->where('users.is_admin', '0')->first(['users.id','users.name','users.first_name','users.last_name','users.dob','users.email','users.user_photo','users.address','users.aadhar_card','users.aadhar_card_back','users.father_name','users.mother_name','users.tenth_board_name','users.tenth_year_name','users.tenth_percentage','users.twelth_board_name','users.twelth_year_name','users.twelth_percentage','users.degree_diploma','users.degree_diploma_year','users.degree_diploma_percentage','payments.payment_id','payments.created_at','users.state','users.zipcode','users.district','users.experience','users.total_experience','users.referal']);
+		
+        return view('home.company-approval-details', compact('userDetails'));
+    }
+
 	/**
      * Display the specified resource.
      *
@@ -590,6 +607,25 @@ class HomeController extends Controller
         }
     }
 
+    /**
+     * To approval company by admin.
+     *
+     * @param  \APP\Company  $company
+     * @return \Illuminate\Http\Response
+     */
 
+    public function CompanyApprovalAdmin(){
+		$varIsAdmin = User::where('id', Auth::id())->value('is_admin');
+    	if($varIsAdmin == 1){
+    		$objApprovalList = CompanyApproval::leftJoin('company_info', 'company_info.id', '=', 'company_approval.company_id')
+    		->leftJoin('users', 'users.id', '=', 'company_approval.user_id')
+    		->orderBy('company_approval.id','desc')->select(['users.name','company_info.name as company_name','company_info.type','company_info.id','users.id as user_id','company_approval.created_at','company_approval.status','company_approval.id as aid'])
+    		->paginate(config('constant.table_pagination'));
+    		return view('company.company-approval', compact('objApprovalList'));
+    	}
+    	else{
+    		return abort(403, 'Unauthorized Action.');
+    	}
+    }
 	
 }

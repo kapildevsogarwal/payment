@@ -5,7 +5,7 @@ use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfessionalController;
 use App\Http\Controllers\PaymentController;
-
+use App\Http\Controllers\SearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,10 +61,12 @@ Route::post('company/store', [App\Http\Controllers\HomeController::class, 'compa
 Route::get('/company', [App\Http\Controllers\HomeController::class, 'listCompany'])->name('company.list');
 Route::get('company/details/{id}', [App\Http\Controllers\HomeController::class, 'showCompany'])->name('company.details');
 Route::get('profile/{id}/user', [App\Http\Controllers\HomeController::class, 'editProfile'])->name('profile.user');
+Route::get('company/approval', [App\Http\Controllers\HomeController::class, 'CompanyApprovalAdmin'])->name('company.admin-approval');
 Route::get('company/{id}/edit', [App\Http\Controllers\HomeController::class, 'editCompany'])->name('company.edit');
 Route::put('/company/{id}/update', [App\Http\Controllers\HomeController::class, 'companyUpdate'])->name('company.update');
 Route::get('/home/listing', [App\Http\Controllers\HomeController::class, 'index'])->name('home.listing');
 Route::delete('/company/destory/{id}', [App\Http\Controllers\HomeController::class, 'companyDestory'])->name('company.destory');
+Route::get('company/show-approval/{id}', [App\Http\Controllers\HomeController::class, 'showCompanyApproval'])->name('company.show-approval');
 Route::get('student/search-student', [App\Http\Controllers\HomeController::class, 'studentSearch'])->name('student.searching');
 Route::get('company/search-company', [App\Http\Controllers\HomeController::class, 'companySearch'])->name('company.searching');
 Route::resource('home', HomeController::class);
@@ -76,6 +78,17 @@ Route::delete('/professional/destory/{id}', [ProfessionalController::class, 'des
 Route::get('/professional/list', [ProfessionalController::class, 'index'])->name('professional.list');
 Route::get('professional/search-professional', [App\Http\Controllers\ProfessionalController::class, 'professionalSearch'])->name('professional.searching');
 Route::resource('professional', ProfessionalController::class);
+
+Route::get('/search/professional', [SearchController::class, 'searchProfessional'])->name('search.professional');
+Route::get('/search/company', [SearchController::class, 'searchCompany'])->name('search.company');
+Route::get('search/search-query', [App\Http\Controllers\SearchController::class, 'professionalSearch'])->name('search.professional-list');
+Route::get('/search/professional/show/{id}', [SearchController::class, 'showProfessional'])->name('search.show-professional');
+
+Route::get('/search/company/show/{id}', [SearchController::class, 'showCompany'])->name('search.show-company');
+
+Route::post('/search/company-approve/{id}', [SearchController::class, 'companyApproveRequest'])->name('search.approve-request');
+Route::post('/search/admin-approve/{id}', [SearchController::class, 'companyApproveByAdmin'])->name('search.approve-admin');
+Route::resource('search', SearchController::class);
 
 
 
