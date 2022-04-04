@@ -46,7 +46,7 @@
                 </div>
                 <div class="box-footer no-padding">
                   <ul class="nav nav-stacked">
-					           <li><a href="professional.serch"><i class="fas fa-eye" aria-hidden="true"></i> &nbsp;Search</a></li>
+					           <li><a href="{{ url('/search/professional') }}"><i class="fas fa-eye" aria-hidden="true"></i> &nbsp;Search</a></li>
 
                   </ul>
                 </div>

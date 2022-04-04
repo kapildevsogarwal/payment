@@ -123,8 +123,8 @@
                         <tr>
                             <td colspan="2" align="center">
                                 <div class="form-check form-check-inline">
-                                    <input type="checkbox" data-url="{{ route('search.approve-request', [$Details->id])}}" class="form-check-input" id="approve-company" value="{{$Details->id}}">
-                                    <label class="form-check-label" for="approve-company">For more detail request for approval</label>
+                                    <input type="checkbox" data-url="{{ route('search.approve-request-admin', [$Details->id])}}" class="form-check-input" id="approve-professional" value="{{$Details->id}}">
+                                    <label class="form-check-label" for="approve-professional">For more detail request for approval</label>
                                 </div>
                             </td>
                         </tr>
@@ -161,7 +161,7 @@
     <script>
         $(document).ready(function(){
             // Delete delivery ticket
-            $('body').on('click', '#approve-company', function(e){
+            $('body').on('click', '#approve-professional', function(e){
                 e.preventDefault();
                 var dataUrl = $(this).data('url');
                 var checkVal = $(this).val();
@@ -169,7 +169,7 @@
                     console.log(checkVal);
                     // Remove delivery ticket
                     swal.fire({
-                        title: 'Request for company full detail?',
+                        title: 'Request to access professional full detail?',
                         text: "This cannot be undone!",
                         type: 'warning',
                         showCancelButton: true,

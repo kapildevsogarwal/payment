@@ -6,6 +6,7 @@ use App\Models\Professional;
 use App\Models\Company;
 use App\Models\UserOrder;
 use App\Models\CompanyApproval;
+use App\Models\ProfessionalApproval;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\UpdateProfessionalProfileRequest;
@@ -66,9 +67,8 @@ class SearchController extends Controller
         $professionalList = Professional::leftJoin('payments', 'payments.user_id', '=', 'professional.user_id')
                     ->leftjoin('users', 'users.id', '=', 'professional.user_id')
                     ->where('professional.id','<','0')
-                    ->orderby('professional.id', 'desc')->select(['professional.id','professional.first_name', 'professional.last_name','professional.father_name','professional.mother_name','professional.address','professional.district','professional.state','professional.zip','professional.type','professional.description','professional.experience','payments.payment_id','payments.created_at','users.referal'])->paginate(config('constant.table_pagination'));
-                
-        return view('search.list', compact('professionalList'));            
+                    ->orderby('professional.id', 'desc')->select(['professional.id','professional.first_name', 'professional.last_name','professional.father_name','professional.mother_name','professional.address','professional.district','professional.state','professional.zip','professional.type','professional.description','professional.experience','payments.payment_id','payments.created_at','users.referal'])->paginate(config('constant.table_pagination'));        
+        return view('search.professional-list', compact('professionalList'));            
     }
 
     /**
@@ -125,7 +125,7 @@ class SearchController extends Controller
                 ->where('professional.id',$id)
                 ->orderby('professional.id', 'desc')->first(['professional.id','professional.first_name','professional.last_name','professional.father_name','professional.mother_name','professional.address', 'professional.user_id','professional.type','professional.description','professional.experience','payments.payment_id','payments.created_at','professional.district','professional.state','professional.zip','users.email','users.referal']);
             
-            $objApproval = CompanyApproval::where('user_id', Auth::id())->where('company_id', $id);
+            $objApproval = ProfessionalApproval::where('user_id', Auth::id())->where('professional_id', $id);
             $status = 0;
             if($objApproval->count() >0){
                 $status = $objApproval->value('status');
@@ -304,7 +304,7 @@ class SearchController extends Controller
         * Get search by companies data by compay name
         * @return \Illuminate\Http\Response
     */
-    public function professionalSearch(Request $request){
+    public function companySearch(Request $request){
         if($request->ajax()){
             $getQuery = $request->get('query');
             $keyword = str_replace(" ", "%", $getQuery);
@@ -338,6 +338,115 @@ class SearchController extends Controller
         }
     }
 
+    public function professionalSearch(Request $request){
+        if($request->ajax()){
+            $getQuery = $request->get('query');
+            $keyword = str_replace(" ", "%", $getQuery);
+            $getlist = Professional::leftJoin('payments', 'payments.user_id', '=', 'professional.user_id')
+                    ->leftjoin('users', 'users.id', '=', 'professional.user_id');
+            if( $keyword!=''){
+                $getlist->where(function($query) use ($keyword){
+                    $query->where('professional.first_name', 'LIKE', '%'.$keyword.'%');
+                    $query->orWhere('professional.last_name', 'LIKE', '%'.$keyword.'%');
+                    //$query->orWhere('professional.father_name', 'LIKE', '%'.$keyword.'%');
+                    //$query->orWhere('professional.mother_name', 'LIKE', '%'.$keyword.'%');
+                    $query->orWhere('professional.address', 'LIKE', '%'.$keyword.'%');
+                    $query->orWhere('professional.type', 'LIKE', '%'.$keyword.'%');
+                     $query->orWhere('professional.experience', 'LIKE', '%'.$keyword.'%');
+                });
+            }
 
+            $professionalList = $getlist->orderby('professional.id', 'desc')->select(['professional.id','professional.first_name', 'professional.last_name','professional.father_name','professional.mother_name','professional.address','professional.district','professional.state','professional.zip','professional.type','professional.description','professional.experience','payments.payment_id','payments.created_at','users.referal'])->paginate(config('constant.table_pagination'));
+            return view('search.search-professional-data', compact('professionalList'))->render();       
+        }   
+    }
 
+    /**
+     * Request for admin the specified resource for company full detail.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function professionalApproveRequest($id)
+    { 
+        DB::beginTransaction();
+        try {
+            // to delete the docus sign related record
+            $varUserType = User::where('id', Auth::id())->value('user_type');
+            $objApproval = ProfessionalApproval::where('user_id', Auth::id())->where('professional_id', $id);
+            if($objApproval->count() == 0){
+                $approvalObj =  ProfessionalApproval::create([
+                    'user_id' => Auth::id(),
+                    'professional_id' => $id,
+                    'by_type' => $varUserType,
+                    'status' => '0'
+                ]);
+
+                DB::commit();
+                return response()->json([
+                    'status' => 'success',
+                    'payload' => [
+                        'message' => 'Your request has been sent for approval!',
+                    ]
+                ], 200);
+            }
+            else{
+                $objStatus = $objApproval->value('status'); 
+                $message = ($objStatus == 0)?'Your request already sent for approval!':'Your request is already approved.';              
+                return response()->json([
+                    'status' => 'failure',
+                    'payload' => [
+                        'message' => $message,
+                    ]
+                ], 200);    
+            }
+        }
+        catch (\Exception $e) {
+           // echo $e->getMessage();die;
+            DB::rollback();
+            return response()->json([
+                'status' => 'failure',
+                'payload' => [
+                    'message' => 'Your request not completed!',
+                ]
+            ], 200);
+        }
+    }
+
+    /**
+     * Request for admin the specified resource for company full detail.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function professionalApproveByAdmin(Request $request, $id)
+    {   
+        DB::beginTransaction();
+        try {
+            // to delete the docus sign related record
+            $status = $request->approve;
+            $company = ProfessionalApproval::find($id);
+            $company->status = $status;
+            $company->update();
+            
+            DB::commit();
+            return response()->json([
+                'status' => 'success',
+                'payload' => [
+                    'message' => 'Your request has been updated successfully!',
+                ]
+            ], 200);
+        
+        }
+        catch (\Exception $e) {
+            //echo $e->getMessage();die;
+            DB::rollback();
+            return response()->json([
+                'status' => 'failure',
+                'payload' => [
+                    'message' => 'Your request not completed!',
+                ]
+            ], 200);
+        }
+    }
 }

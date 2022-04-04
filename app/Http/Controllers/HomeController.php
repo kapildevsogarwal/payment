@@ -9,6 +9,7 @@ use App\Models\UserOrder;
 use App\Models\Professional;
 use App\Models\Payment;
 use App\Models\CompanyApproval;
+use App\Models\ProfessionalApproval;
 use Auth;
 use Session;
 use DB;
@@ -622,6 +623,27 @@ class HomeController extends Controller
     		->orderBy('company_approval.id','desc')->select(['users.name','company_info.name as company_name','company_info.type','company_info.id','users.id as user_id','company_approval.created_at','company_approval.status','company_approval.id as aid'])
     		->paginate(config('constant.table_pagination'));
     		return view('company.company-approval', compact('objApprovalList'));
+    	}
+    	else{
+    		return abort(403, 'Unauthorized Action.');
+    	}
+    }
+
+    /**
+     * To approval company by admin.
+     *
+     * @param  \APP\Company  $professional
+     * @return \Illuminate\Http\Response
+     */
+
+    public function ProfessionalApprovalAdmin(){
+		$varIsAdmin = User::where('id', Auth::id())->value('is_admin');
+    	if($varIsAdmin == 1){
+    		$objApprovalList = ProfessionalApproval::leftJoin('professional', 'professional.id', '=', 'prof_approval.professional_id')
+    		->leftJoin('users', 'users.id', '=', 'prof_approval.user_id')
+    		->orderBy('prof_approval.id','desc')->select(['users.name','professional.first_name','professional.last_name','professional.type','professional.id','users.id as user_id','prof_approval.created_at','prof_approval.status','prof_approval.id as aid'])
+    		->paginate(config('constant.table_pagination'));
+    		return view('professional.professional-approval', compact('objApprovalList'));
     	}
     	else{
     		return abort(403, 'Unauthorized Action.');

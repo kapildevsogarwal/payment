@@ -62,6 +62,7 @@ Route::get('/company', [App\Http\Controllers\HomeController::class, 'listCompany
 Route::get('company/details/{id}', [App\Http\Controllers\HomeController::class, 'showCompany'])->name('company.details');
 Route::get('profile/{id}/user', [App\Http\Controllers\HomeController::class, 'editProfile'])->name('profile.user');
 Route::get('company/approval', [App\Http\Controllers\HomeController::class, 'CompanyApprovalAdmin'])->name('company.admin-approval');
+Route::get('professional/approval', [App\Http\Controllers\HomeController::class, 'ProfessionalApprovalAdmin'])->name('professional.admin-approval');
 Route::get('company/{id}/edit', [App\Http\Controllers\HomeController::class, 'editCompany'])->name('company.edit');
 Route::put('/company/{id}/update', [App\Http\Controllers\HomeController::class, 'companyUpdate'])->name('company.update');
 Route::get('/home/listing', [App\Http\Controllers\HomeController::class, 'index'])->name('home.listing');
@@ -80,14 +81,20 @@ Route::get('professional/search-professional', [App\Http\Controllers\Professiona
 Route::resource('professional', ProfessionalController::class);
 
 Route::get('/search/professional', [SearchController::class, 'searchProfessional'])->name('search.professional');
+
 Route::get('/search/company', [SearchController::class, 'searchCompany'])->name('search.company');
-Route::get('search/search-query', [App\Http\Controllers\SearchController::class, 'professionalSearch'])->name('search.professional-list');
+Route::get('search/search-query', [App\Http\Controllers\SearchController::class, 'companySearch'])->name('search.company-list');
+Route::get('search/search-query-professional', [App\Http\Controllers\SearchController::class, 'professionalSearch'])->name('search.professional-list');
 Route::get('/search/professional/show/{id}', [SearchController::class, 'showProfessional'])->name('search.show-professional');
 
 Route::get('/search/company/show/{id}', [SearchController::class, 'showCompany'])->name('search.show-company');
 
 Route::post('/search/company-approve/{id}', [SearchController::class, 'companyApproveRequest'])->name('search.approve-request');
 Route::post('/search/admin-approve/{id}', [SearchController::class, 'companyApproveByAdmin'])->name('search.approve-admin');
+
+Route::post('/search/professional-approve/{id}', [SearchController::class, 'professionalApproveRequest'])->name('search.approve-request-admin');
+
+Route::post('/search/professional-admin-approve/{id}', [SearchController::class, 'professionalApproveByAdmin'])->name('search.professional-approve-admin');
 Route::resource('search', SearchController::class);
 
 
