@@ -1,5 +1,5 @@
 <?php
-
+abort(404);
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\HomeController;
@@ -96,7 +96,3 @@ Route::post('/search/professional-approve/{id}', [SearchController::class, 'prof
 
 Route::post('/search/professional-admin-approve/{id}', [SearchController::class, 'professionalApproveByAdmin'])->name('search.professional-approve-admin');
 Route::resource('search', SearchController::class);
-
-
-
-
