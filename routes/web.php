@@ -1,4 +1,4 @@
-<?php
+<?php abort(404);
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\HomeController;
