@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Cashier\Billable;
@@ -13,7 +14,7 @@ use Laravel\Cashier\Billable;
 
 class User extends Authenticatable
 {
-    use Billable, HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use Billable, HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -21,7 +22,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'email', 'password','first_name','last_name','dob','user_photo', 'address', 'aadhar_card','aadhar_card_back','father_name','mother_name','tenth_board_name','tenth_year_name','tenth_percentage','twelth_board_name','twelth_year_name','twelth_percentage','degree_diploma','degree_diploma_year','degree_diploma_percentage','is_admin','stripe_id','pm_type','pm_last_four','trial_ends_at','user_type','state','zipcode','district','experience','total_experience','referal'
+        'name', 'email', 'password','first_name','last_name','dob','user_photo', 'address'
     ];
 
     /**
@@ -42,4 +43,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+	
+	 public function setPasswordAttribute($password) {   
+        $this->attributes['password'] = bcrypt($password);
+    }
 }

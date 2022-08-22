@@ -1,11 +1,4 @@
-<?php abort(404);
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SubscriptionController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProfessionalController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\SearchController;
-
+<?php
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,10 +12,10 @@ use App\Http\Controllers\SearchController;
 
 Route::get('/', function () {
 	if(Auth::id() > 0){
-		 return redirect('/home');
+		 return redirect('/users');
 	}
 	else{
-		return view('register');
+		return redirect('/login');
 	}
 });
 
@@ -35,6 +28,13 @@ Route::get('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'
 
 Auth::routes();
 
+// Role
+Route::resource('roles', RoleController::class);
+
+
+// PermissionStoreProfileRecurringRequest
+
+Route::resource('permissions', PermissionController::class);
 
 
 //Route::get('payment-razorpay', 'PaymentController@create')->name('paywithrazorpay');
@@ -54,22 +54,16 @@ Route::post('/process', [App\Http\Controllers\SubscriptionController::class, 'pa
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/profile', [App\Http\Controllers\HomeController::class, 'profile'])->name('profile');
-Route::post('cart/make-payment', [App\Http\Controllers\HomeController::class, 'makeOrderPayment'])->name('cart.make-payment');
-Route::get('/company/add', [App\Http\Controllers\HomeController::class, 'companyAdd'])->name('company.add');
-Route::post('company/store', [App\Http\Controllers\HomeController::class, 'companySave'])->name('company.store');
-Route::get('/company', [App\Http\Controllers\HomeController::class, 'listCompany'])->name('company.list');
-Route::get('company/details/{id}', [App\Http\Controllers\HomeController::class, 'showCompany'])->name('company.details');
-Route::get('profile/{id}/user', [App\Http\Controllers\HomeController::class, 'editProfile'])->name('profile.user');
-Route::get('company/approval', [App\Http\Controllers\HomeController::class, 'CompanyApprovalAdmin'])->name('company.admin-approval');
-Route::get('professional/approval', [App\Http\Controllers\HomeController::class, 'ProfessionalApprovalAdmin'])->name('professional.admin-approval');
-Route::get('company/{id}/edit', [App\Http\Controllers\HomeController::class, 'editCompany'])->name('company.edit');
-Route::put('/company/{id}/update', [App\Http\Controllers\HomeController::class, 'companyUpdate'])->name('company.update');
-Route::get('/home/listing', [App\Http\Controllers\HomeController::class, 'index'])->name('home.listing');
-Route::delete('/company/destory/{id}', [App\Http\Controllers\HomeController::class, 'companyDestory'])->name('company.destory');
-Route::get('company/show-approval/{id}', [App\Http\Controllers\HomeController::class, 'showCompanyApproval'])->name('company.show-approval');
-Route::get('student/search-student', [App\Http\Controllers\HomeController::class, 'studentSearch'])->name('student.searching');
-Route::get('company/search-company', [App\Http\Controllers\HomeController::class, 'companySearch'])->name('company.searching');
+
 Route::resource('home', HomeController::class);
+
+
+Route::get('company/details/{id}', [App\Http\Controllers\HomeController::class, 'showCompany'])->name('company.details');
+
+
+Route::resource('party', PartyController::class);
+
+Route::resource('users', UserController::class);
 
 
 // Professional Detail routes

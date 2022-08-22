@@ -30,7 +30,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = '/users';
     //protected $redirectTo = 'https://aspes.in/';
     /**
      * Create a new controller instance.
@@ -50,6 +50,6 @@ class LoginController extends Controller
 
     $request->session()->regenerate();
 
-    return redirect('https://aspes.in');
+    return redirect('/');
 }
 }

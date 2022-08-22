@@ -16,29 +16,37 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
-            @if (Auth::user()->is_admin == 1)
-                <li  class="active"><a href="{{ url('/home') }}"><i class="fa fa-users"></i> <span>Users</span></a></li>
-    			<li  class="active"><a href="{{ url('/company') }}"><i class="fa fa-building"></i> <span>Company</span></a></li>
-                <li  class="active"><a href="{{ url('/professional') }}"><i class="fa fa-user-tie"></i> <span>Professional</span></a></li>
-                <li  class="active"><a href="{{ url('/company/approval') }}"><i class="fa fa-user-tie"></i> <span>Company Approval</span></a></li>
-                <li  class="active"><a href="{{ url('/professional/approval') }}"><i class="fa fa-user-tie"></i> <span>Professional Approval</span></a></li>
-                <li  class="active"><a href="https://aspes.in/visitor"><i class="fa fa-user-tie"></i> <span>Visitors</span></a></li>
-            @else
-                <li  class="active">
-                    <a href="{{ url('/search') }}"><i class="fa fa-dashboard"></i><span> Search</span>
+           
+                <li  class="active"><a href="{{ url('/users') }}"><i class="fa fa-users"></i> <span>Users</span></a></li>
+    			<li  class="active"><a href="{{ url('/party') }}"><i class="fa fa-building"></i> <span>Party</span></a></li>
+				
+				
+				<li class="treeview  active menu-open">
+                    <a href="#">
+                        <i class="fa fa-users"></i> <span>Permissions</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
                     </a>
+                    <ul class="treeview-menu">
+                            <li class="active">
+                                <a href="{{ route('roles.index') }}"><i class="fa fa-circle-o"></i> Roles</a>
+                            </li>
+                            <li >
+                                <a href="{{ route('permissions.index') }}"><i class="fa fa-circle-o"></i> Permissions</a>
+                            </li>
+                       
+                    </ul>
                 </li>
-                <li  class="active">
-                    <a href="{{ url('/profile') }}"><i class="fa fa-users"></i><span> Profile</span>
-                    </a>
-                </li>
-            @endif
+				
+           
             <li>
                 <a href="{{ route('logout') }}"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="fa fa-sign-out text-aqua"></i> <span>Logout</span>
                 </a>
             </li>
+			
         </ul>
     </section>
     <!-- /.sidebar -->

@@ -11,7 +11,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- <title>@yield('pageTitle') | {{ config('app.name', 'Straw Hat Rentals') }}</title> -->
-    <title>Student Portal</title>
+    <title>JMJ Infrastructure</title>
 
     @include('partials.header-assets')
 
