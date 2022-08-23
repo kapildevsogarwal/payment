@@ -12,7 +12,7 @@
 
 Route::get('/', function () {
 	if(Auth::id() > 0){
-		// return redirect('/users');
+		 return redirect('/users');
 	}
 	else{
 		return redirect('/login');
