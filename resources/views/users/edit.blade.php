@@ -55,6 +55,17 @@
                             @enderror
                         </div>
                     </div>
+				<div class="form-group @error('address') has-error @enderror">
+                        <label for="address" class="col-sm-2 control-label">Address</label>
+                        <div class="col-sm-10">
+                            {{ Form::text('address', old('address'), ['class' => 'form-control', 'id' => 'email', 'placeholder' => 'Address']) }}
+                            @error('address')
+                                <span class="help-block" role="alert">
+                                    {{ $message }}
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
 
                     <div class="form-group @error('roles') has-error @enderror">
                         <label for="roles" class="col-sm-2 control-label">Roles</label>

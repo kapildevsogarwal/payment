@@ -2,7 +2,7 @@
 
 @extends('layouts.user')
 
-@section('pageTitle', 'Party Detail Information')
+@section('pageTitle', 'User Detail')
 
 @section('content')
 <div class="row">
@@ -11,7 +11,7 @@
     </div>
     <div class="col-xs-8 mb-2">
        
-            <a href="{{ route('party.edit', [$party->id]) }}" class="btn btn-primary pull-right"><i class="fa fa-pencil mr-1"></i>Edit Party</a>
+            <a href="{{ route('users.edit', [$user->id]) }}" class="btn btn-primary pull-right"><i class="fa fa-pencil mr-1"></i>Edit User</a>
         
     </div>
 </div>
@@ -23,35 +23,33 @@
 
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title pull-left">Party Detail: <strong>{{($party->name)?ucwords($party->name):''}}</strong></h3>
+                <h3 class="box-title pull-left">User Detail: <strong>{{($user->name)?ucwords($user->name):''}}</strong></h3>
             </div>
 
             <div class="box-body table-responsive">
                 <table class="table table-striped">
                     <tbody>
 						<tr>
-                            <td width="20%"><strong>Party Name</strong></td>
+                            <td width="20%"><strong>User Name</strong></td>
                             <td>
-								{{($party->name)?ucfirst($party->name):''}}
+								{{($user->name)?ucfirst($user->name):''}}
                             </td>
                         </tr>
                         <tr>
                             <td width="20%"><strong>Email</strong></td>
                             <td>
-								{{($party->email)?ucfirst($party->email):''}}
+								{{($user->email)?ucfirst($user->email):''}}
                             </td>
                         </tr>
                         <tr>
                             <td width="20%"><strong>Address</strong></td>
                             <td>
-							   {{($party->address)?ucfirst($party->address):''}}
+							   {{($user->address)?ucfirst($user->address):''}}
                             </td>
                         </tr>
                         <tr>
-                            <td width="20%"><strong>Gst Number</strong></td>
-                            <td>
-                               {{$party->gst_number}}
-                            </td>
+                            <td width="20%"><strong>User Type</strong></td>
+                            <td>{{ $roletype }}</td>
                         </tr> 
                     </tbody>
                 </table>

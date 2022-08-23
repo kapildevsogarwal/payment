@@ -49,13 +49,10 @@
                                 <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
                                 <td>{{ Str::appDateFormat($user->created_at) }}</td>
                                 <td class="action-icons">
-										
+										<a href="{{ route('users.show', $user->id) }}" class="btn btn-success pull-left"><i class="fa fa-eye"></i></a>
                                         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-success pull-left"><i class="fa fa-pencil"></i></a>
-                                    
-
-                                  
                                         {!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user->id], 'name' => 'frm_delete' ]) !!}
-                                            {!! Form::button('<i class="fa fa-trash"></i>', ['class' => 'btn btn-danger', 'type' => 'submit']) !!}
+                                        {!! Form::button('<i class="fa fa-trash"></i>', ['class' => 'btn btn-danger', 'type' => 'submit']) !!}
                                         {!! Form::close() !!}
                                    
 

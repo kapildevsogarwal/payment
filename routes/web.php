@@ -12,7 +12,7 @@
 
 Route::get('/', function () {
 	if(Auth::id() > 0){
-		 return redirect('/users');
+		// return redirect('/users');
 	}
 	else{
 		return redirect('/login');
@@ -29,6 +29,7 @@ Route::get('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'
 Auth::routes();
 
 // Role
+
 Route::resource('roles', RoleController::class);
 
 
@@ -37,22 +38,15 @@ Route::resource('roles', RoleController::class);
 Route::resource('permissions', PermissionController::class);
 
 
+Route::resource('users', UserController::class);
+
 //Route::get('payment-razorpay', 'PaymentController@create')->name('paywithrazorpay');
-Route::get('payment-user', [PaymentController::class, 'create'])->name('paywithrazorpay');
-Route::post('payment', [PaymentController::class, 'payment'])->name('payment');
 
-Route::get('/subscription/create', [App\Http\Controllers\SubscriptionController::class, 'index'])->name('subscription.create');
-Route::get('/subscription/company/create', [App\Http\Controllers\SubscriptionController::class, 'companyCreate'])->name('subscription.company.create');
-Route::get('/subscription/company/order-post', [App\Http\Controllers\SubscriptionController::class, 'companyPost'])->name('subscription.company.order.post');
-#Route::get('/products', [App\Http\Controllers\ProductController::class, 'index'])->name('products');
-#Route::post('order-post', ['as'=>'order-post','uses'=>'SubscriptionController@orderPost'])->name('order-post');
-Route::post('order-post', [App\Http\Controllers\SubscriptionController::class, 'orderPost'])->name('order.post');
-Route::post('order-company', [App\Http\Controllers\SubscriptionController::class, 'orderCompany'])->name('order.company');
 
-Route::get('/payment', [App\Http\Controllers\HomeController::class, 'index'])->name('payment');
-Route::post('/process', [App\Http\Controllers\SubscriptionController::class, 'paymentAction'])->name('payment_process');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
 Route::get('/profile', [App\Http\Controllers\HomeController::class, 'profile'])->name('profile');
 
 Route::resource('home', HomeController::class);
@@ -63,7 +57,7 @@ Route::get('company/details/{id}', [App\Http\Controllers\HomeController::class, 
 
 Route::resource('party', PartyController::class);
 
-Route::resource('users', UserController::class);
+
 
 
 // Professional Detail routes

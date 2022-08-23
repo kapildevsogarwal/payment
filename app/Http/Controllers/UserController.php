@@ -34,7 +34,29 @@ class UserController extends Controller
     	$users = User::orderby('id', 'desc')->paginate(config('constant.table_pagination'));
 		  return view('users.index')->with('users', $users);
     }
+
+	/**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function userlist()
+    {   
+    	$users = User::orderby('id', 'desc')->paginate(config('constant.table_pagination'));
+		  return view('users.index')->with('users', $users);
+    }
 	
+	/**
+     * Display the specified resource.
+     *
+     * @param  \SHR\DeliveryTicket  $deliveryTicket
+     * @return \Illuminate\Http\Response
+     */
+    public function show(User $user)
+    {
+		$roletype = $user->roles()->pluck('name')->implode(' ');
+        return view('users.details', compact('user','roletype'));
+    }
 	
 	 /**
     * Show the form for creating a new resource.
@@ -67,21 +89,16 @@ class UserController extends Controller
 		$request->password = Hash::make($request['password']);
         $user = User::create($request->only('email', 'name', 'password')); //Retrieving only the email and password data
 
-             
         //Checking if a role was selected
         if (isset($roles)) {
-
-        //     foreach ($roles as $role) {
+			
             $role_r = Role::where('id', '=', $roles)->firstOrFail();            
             $user->assignRole($role_r); //Assigning role to user
-			
-        //     }
         }
-        
-        
+
         //Redirect to the users.index view and display message
-        return redirect()->route('users.index')
-            ->with('success', 'User, "'. $user->name.'" added successfully!');
+		
+        return redirect('/user-list')->with('success', 'User, "'. $user->name.'" added successfully!');
     }
 	
 	
@@ -133,7 +150,7 @@ class UserController extends Controller
         
 
         $this->validate($request,  $arrValidation);
-        $input = $request->only(['name', 'email']); //Retreive the name, email and password fields
+        $input = $request->only(['name', 'email','address']); //Retreive the name, email and password fields
 
         if(!empty($request->password)){
             $input['password'] = $request->password;
