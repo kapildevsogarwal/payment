@@ -68,7 +68,28 @@
                             @enderror
                         </div>
                     </div>
-                    
+                    <div class="form-group @error('account_number') has-error @enderror">
+                        <label for="account_number" class="col-sm-2 control-label">Account Number</label>
+                        <div class="col-sm-10">
+                            {{ Form::text('account_number', old('account_number'), ['class' => 'form-control', 'id' => 'account_number', 'placeholder' => 'Account Number']) }}
+                            @error('account_number')
+                                <span class="help-block" role="alert">
+                                    {{ $message }}
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+					<div class="form-group @error('ifsc_code') has-error @enderror">
+                        <label for="ifsc_code" class="col-sm-2 control-label">IFSC Code</label>
+                        <div class="col-sm-10">
+                            {{ Form::text('ifsc_code', old('ifsc_code'), ['class' => 'form-control', 'id' => 'ifsc_code', 'placeholder' => 'IFSC Code']) }}
+                            @error('ifsc_code')
+                                <span class="help-block" role="alert">
+                                    {{ $message }}
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="box-footer">

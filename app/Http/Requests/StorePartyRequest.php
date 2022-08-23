@@ -33,6 +33,8 @@ class StorePartyRequest extends FormRequest
               'address' => ['required', 'string', 'max:255'],
               'email' => ['required', 'email', 'string', 'max:100'],
               'gst_number' => ['required', 'string', 'max:255'],
+			  'account_number' => ['required', 'string', 'max:255'],
+			  'ifsc_code' => ['required', 'string', 'max:255'],
            
            ];
         }

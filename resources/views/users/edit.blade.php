@@ -86,13 +86,13 @@
                         </div>
                     </div>
                    
-                    @if(Auth::user()->id == $user->id)
+                    
 
                         <div class="form-group @error('password') has-error @enderror">
                             <label for="password" class="col-sm-2 control-label">Password</label>
                             <div class="col-sm-10">
                                 <input type="password" name="password" class="form-control" id="password" placeholder="Password" value="{{ old('password') }}">
-                                {{-- {{ Form::password('password', old('password'), ['class' => 'form-control', 'id' => 'password', 'placeholder' => 'Password']) }} --}}
+                                
                                 @error('password')
                                     <span class="help-block" role="alert">
                                         {{ $message }}
@@ -105,7 +105,7 @@
                             <label for="password_confirmation" class="col-sm-2 control-label">Confirm Password</label>
                             <div class="col-sm-10">
                                 <input type="password" name="password_confirmation" class="form-control" id="password_confirmation" placeholder="Password Confirmation" value="{{ old('password_confirmation') }}">
-                                {{-- {{ Form::password('password', old('password'), ['class' => 'form-control', 'id' => 'password', 'placeholder' => 'Password']) }} --}}
+                                
                                 @error('password_confirmation')
                                     <span class="help-block" role="alert">
                                         {{ $message }}
@@ -113,7 +113,7 @@
                                 @enderror
                             </div>
                         </div>
-                    @endif
+
 
                 </div>
 

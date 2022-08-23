@@ -77,17 +77,17 @@ class UserController extends Controller
     */
     public function store(Request $request) {
     //Validate name, email and password fields
-        $roles = $request['roles'];
-         
+        $roles = $request['roles'];      
         $arrValidation = [
                 'name'=>'required|max:120',
                 'email'=>'required|email|unique:users',
+				'address'=>'required|max:120',
                 'password'=>'required|min:6|confirmed'
             ];
         
         $this->validate($request, $arrValidation);
 		$request->password = Hash::make($request['password']);
-        $user = User::create($request->only('email', 'name', 'password')); //Retrieving only the email and password data
+        $user = User::create($request->only('email', 'name', 'password','address')); //Retrieving only the email and password data
 
         //Checking if a role was selected
         if (isset($roles)) {
@@ -98,7 +98,7 @@ class UserController extends Controller
 
         //Redirect to the users.index view and display message
 		
-        return redirect('/user-list')->with('success', 'User, "'. $user->name.'" added successfully!');
+         return redirect()->route('users.index')->with('success', 'User, "'. $user->name.'" added successfully!');
     }
 	
 	
@@ -144,16 +144,17 @@ class UserController extends Controller
          
 		$arrValidation = [
 			'name'=>'required|max:120',
+			'address'=>'required|max:120',
 			'email'=>'required|email|unique:users,email,'.$id,
 			'password'=>'confirmed'
 		];
         
 
         $this->validate($request,  $arrValidation);
-        $input = $request->only(['name', 'email','address']); //Retreive the name, email and password fields
+        $input = $request->only(['name', 'email','address',]); //Retreive the name, email and password fields
 
         if(!empty($request->password)){
-            $input['password'] = $request->password;
+           $input['password'] = $request->password;
         }
 
          $roles = $request['roles'];

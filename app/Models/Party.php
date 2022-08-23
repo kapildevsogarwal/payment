@@ -16,7 +16,7 @@ class Party extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'address','gst_number'
+        'name', 'email', 'address','gst_number','account_number','ifsc_code'
     ];
 
     

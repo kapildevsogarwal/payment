@@ -2,7 +2,7 @@
 <footer class="main-footer">
 <div class="row">
 <div class="col-md-4 col-xs-12">
-    <strong>Copyright &copy; Asenter.</strong>
+    <strong>Copyright &copy; JMJ Infrastructure.</strong>
 </div>
 <div class="col-md-4 col-xs-12">
     <div class="text-center" >
@@ -11,7 +11,7 @@
 </div>
 <div class="col-md-4 col-xs-12">
 	<div class="pull-right">
-     <b>Software by </b><a href="javascript:void(0)" class="text-reset">Asenter</a> 
+     <b>Software by </b><a href="javascript:void(0)" class="text-reset">JMJ</a> 
  </div>
 </div>
 </div>

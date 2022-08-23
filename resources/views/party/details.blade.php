@@ -52,7 +52,19 @@
                             <td>
                                {{$party->gst_number}}
                             </td>
-                        </tr> 
+                        </tr>
+						<tr>
+						    <td width="20%"><strong>Account Number</strong></td>
+                            <td>
+                               {{$party->account_number}}
+                            </td>
+                        </tr>
+						<tr>
+						    <td width="20%"><strong>IFSC Code</strong></td>
+                            <td>
+                               {{$party->ifsc_code}}
+                            </td>
+                        </tr>						
                     </tbody>
                 </table>
                 <div class="text-center">

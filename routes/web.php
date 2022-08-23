@@ -40,7 +40,7 @@ Route::resource('permissions', PermissionController::class);
 
 Route::resource('users', UserController::class);
 
-//Route::get('payment-razorpay', 'PaymentController@create')->name('paywithrazorpay');
+
 
 
 

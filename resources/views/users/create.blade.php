@@ -46,6 +46,17 @@
                             @enderror
                         </div>
                     </div>
+					<div class="form-group @error('address') has-error @enderror">
+                        <label for="address" class="col-sm-2 control-label">Address</label>
+                        <div class="col-sm-10">
+                            {{ Form::text('address', old('address'), ['class' => 'form-control', 'id' => 'address', 'placeholder' => 'Address']) }}
+                            @error('address')
+                                <span class="help-block" role="alert">
+                                    {{ $message }}
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
 
                     <!-- <div class="form-group @error('roles') has-error @enderror">
                         <label for="roles" class="col-sm-2 control-label">Roles</label>
@@ -68,13 +79,13 @@
                     <div class="form-group @error('roles') has-error @enderror">
                         <label for="roles" class="col-sm-2 control-label">Roles</label>
                         <div class="col-sm-10">
-                        <input type="hidden" value="4" id="rolval" name="roles" class="hidroles">
+                        <input type="hidden" value="1" id="rolval" name="roles" class="hidroles">
                             <select name="roles" form="carform" class="form-control role">
                                 @foreach ($roles as $role)
                                     @if(old('roles')!='')
                                         <option value="{{ $role->id }}" @if($role->id == old('roles')) selected @endif >{{ $role->name }}</option>
                                     @else
-                                        <option value="{{ $role->id }}" @if($role->id == 4) selected @endif >{{ $role->name }}</option>
+                                        <option value="{{ $role->id }}" @if($role->id == 1) selected @endif >{{ $role->name }}</option>
                                     @endif
                                 @endforeach
                             </select>

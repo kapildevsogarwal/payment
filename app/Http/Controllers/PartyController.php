@@ -54,7 +54,9 @@ class PartyController extends Controller
             'name' => $request->name,
 			'email' => $request->email,
 			'address' => $request->address,
-			'gst_number' => $request->gst_number
+			'gst_number' => $request->gst_number,
+			'account_number' => $request->account_number,
+			'ifsc_code' => $request->ifsc_code,
 		]);
 		
 		 return redirect()->route('party.index')
