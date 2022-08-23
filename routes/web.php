@@ -18,7 +18,7 @@ Route::get('/', function () {
 		return redirect('/login');
 	}
 });
-
+ 
 // Refresh CSRF Token
 Route::get('refresh-csrf', function() {
     return csrf_token();
