@@ -5,16 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Party;
+use App\Models\Sale;
 use Auth;
 use Session;
 use DB;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreUserEditRequest;
 use App\Http\Requests\UpdatePartyEditRequest;
-use App\Http\Requests\StorePartyRequest;
+use App\Http\Requests\StoreBillsRequest;
 
 
-class PartyController extends Controller
+class salesController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -31,16 +32,26 @@ class PartyController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+	 public function tests(){
+		 echo "dasdssads";die;
+	 }
     public function index()
-    {
-		$partyList = Party::orderby('id', 'desc')->paginate(config('constant.table_pagination'));
-		return view('party.index',compact('partyList'));
+    { 
+		$bills = Sale::orderby('id', 'desc')->paginate(config('constant.table_pagination'));
+		foreach($bills as $bill){
+			$bill->party_name = Party::where('id', $bill->party_id)->value('name');
+			$bill->address = Party::where('id', $bill->party_id)->value('address');
+			$bill->gst_number = Party::where('id', $bill->party_id)->value('gst_number');
+		}
+		//$bills = Sale::orderby('id', 'desc')->paginate(config('constant.table_pagination'));
+		return view('sales.index',compact('bills'));
 	}	
 	
 	public function create(){
-		
-		return view('party.create');
+		$parties = Party::get();
+		return view('sales.create', compact('parties'));
 	}
+	
 	
 	/**
      * Display the specified resource.
@@ -48,19 +59,24 @@ class PartyController extends Controller
      * @param  \SHR\DeliveryTicket  $deliveryTicket
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePartyRequest $request)
+    public function store(StoreBillsRequest $request)
     {  
-		$party = Party::create([
-            'name' => $request->name,
-			'email' => $request->email,
-			'address' => $request->address,
-			'gst_number' => $request->gst_number,
-			'account_number' => $request->account_number,
-			'ifsc_code' => $request->ifsc_code,
+		$bills = Sale::create([
+            'invoice_no' => $request->invoice_no,
+			'invoice_date' => $this->setCustomDate($request->invoice_date),
+			'party_id' => $request->party_id,
+			'net_amount' => $request->net_amount,
+			'igst_percent' => $request->igst_percent,
+			'igst_total' => $request->igst_total,
+			'ca_gst_percent' => $request->ca_gst_percent,
+			'ca_gst_total' => $request->ca_gst_total,
+			'sgst_percent' => $request->sgst_percent,
+			'sgst_total' => $request->sgst_total,
+			'total_amount' => $request->total_amount,
 		]);
 		
-		 return redirect()->route('party.index')
-            ->with('success', $party->name.' added successfully!');
+		return redirect()->route('sales.index')
+            ->with('success', $bills->invoice_no.' bill added successfully!');
 		
     }
 	
@@ -72,21 +88,13 @@ class PartyController extends Controller
      */
     public function show($id)
     {
-		$party = Party::where('id', $id)->first();
-        return view('party.details', compact('party'));
+		$bills = Sale::where('id', $id)->first();
+		$party = Party::where('id', $bills->party_id)->first(['name','address','gst_number']);
+		
+        return view('sales.details', compact('bills','party'));
     }
 	
-	/**
-     * Display the specified resource.
-     *
-     * @param  \SHR\DeliveryTicket  $deliveryTicket
-     * @return \Illuminate\Http\Response
-     */
-    public function getPartyDetail(Request $request)
-    {	
-		$id = $request->get('id');
-		return $party = Party::where('id', $id)->first(['id','name','address','gst_number']);
-    }
+	
 	/**
      * Display the specified resource.
      *
@@ -97,7 +105,7 @@ class PartyController extends Controller
     {
 		if($id > 0){
 			$party = Party::where('id', $id)->first();			
-			return view('party.edit', compact('party'));
+			return view('sales.edit', compact('party'));
 		}
 		else{
 			return abort(403, 'Unauthorized action.');
@@ -112,7 +120,7 @@ class PartyController extends Controller
         $party->email = $input['email'];
         $party->gst_number = $input['gst_number'];
         $party->update();
-		return redirect()->route('party.index')
+		return redirect()->route('sales.index')
 						->with('success', 'Your request has been update successfully');
        	
     }
@@ -137,7 +145,7 @@ class PartyController extends Controller
                 'status' => 'success',
                 'payload' => [
                     'message' => 'Your request has been completed successfully!',
-                    'url' => route('party.index')
+                    'url' => route('sales.index')
                 ]
             ], 200);
         }
@@ -148,7 +156,7 @@ class PartyController extends Controller
                 'status' => 'failure',
                 'payload' => [
                     'message' => 'Your request not completed!',
-                    'url' => route('party.index')
+                    'url' => route('sales.index')
                 ]
             ], 200);
         }
@@ -180,5 +188,13 @@ class PartyController extends Controller
         }
     }
 	
-	
+	public function setCustomDate($varDate){
+		if($varDate!=''){
+			$varDate = date('Y-m-d', strtotime($varDate));
+			return $varDate;
+		}
+		else{
+			$varDate = date('Y-s-d');
+		}
+	}
 }

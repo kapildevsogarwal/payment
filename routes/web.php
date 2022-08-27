@@ -41,6 +41,8 @@ Route::resource('permissions', PermissionController::class);
 Route::resource('users', UserController::class);
 
 
+Route::get('sales/saleslist', 'SalesController@tests');
+Route::resource('sales', SalesController::class);
 
 
 
@@ -54,7 +56,7 @@ Route::resource('home', HomeController::class);
 
 Route::get('company/details/{id}', [App\Http\Controllers\HomeController::class, 'showCompany'])->name('company.details');
 
-
+Route::get('party/getDetail', 'PartyController@getPartyDetail');
 Route::resource('party', PartyController::class);
 
 

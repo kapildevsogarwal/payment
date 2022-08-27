@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Party extends Model
+class Sale extends Model
 {
 	
     use SoftDeletes;
-    protected $table = 'party_info';
+    protected $table = 'sales_bill';
 	protected $primaryKey = 'id';
     /**
      * The attributes that are mass assignable.
@@ -17,7 +17,7 @@ class Party extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'address','gst_number','account_number','ifsc_code'
+        'invoice_no', 'invoice_date', 'party_id', 'net_amount', 'igst_percent', 'igst_total', 'ca_gst_percent', 'ca_gst_total', 'sgst_percent', 'sgst_total', 'total_amount'
     ];
 
     

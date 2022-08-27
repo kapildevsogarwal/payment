@@ -23,7 +23,9 @@
     			<li   @if(Request::is('party') || Request::is('party/*')) class="active" @endif >
 					<a href="{{ url('/party') }}"><i class="fa fa-building"></i> <span>Party</span></a>
 				</li>
-				
+				<li   @if(Request::is('sales') || Request::is('sales/*')) class="active" @endif >
+					<a href="{{ url('/sales') }}"><i class="fa fa-building"></i> <span>Sales</span></a>
+				</li>
 				
 				<li class="treeview  @if(
                         Request::is('roles') || Request::is('roles/*')
