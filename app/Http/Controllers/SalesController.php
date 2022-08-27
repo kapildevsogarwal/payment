@@ -139,7 +139,7 @@ class salesController extends Controller
         DB::beginTransaction();
         try {
             // to delete the docus sign related record
-            $objDelete = Party::where('id', '=', $id)->delete();
+            $objDelete = Sale::where('id', '=', $id)->delete();
             DB::commit();
             return response()->json([
                 'status' => 'success',
