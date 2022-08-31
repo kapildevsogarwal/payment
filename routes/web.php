@@ -11,12 +11,8 @@
 */
 
 Route::get('/', function () {
-	if(Auth::id() > 0){
-		 return redirect('/users');
-	}
-	else{
-		return redirect('/login');
-	}
+    return redirect('login');
+    // return view('welcome');
 });
  
 // Refresh CSRF Token
@@ -27,7 +23,7 @@ Route::get('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'
 
 
 Auth::routes();
-
+Route::get('/home', 'UserController@index');
 // Role
 
 Route::resource('roles', RoleController::class);
@@ -44,13 +40,9 @@ Route::resource('users', UserController::class);
 Route::get('sales/saleslist', 'SalesController@tests');
 Route::resource('sales', SalesController::class);
 
-
-
-
-
-
 Route::get('/profile', [App\Http\Controllers\HomeController::class, 'profile'])->name('profile');
 
+Route::get('home/', 'UserController@index');
 Route::resource('home', HomeController::class);
 
 

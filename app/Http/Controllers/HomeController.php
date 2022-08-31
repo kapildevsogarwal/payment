@@ -37,6 +37,9 @@ class HomeController extends Controller
      */
     public function index()
     {   
+		$users = User::orderby('id', 'desc')->paginate(config('constant.table_pagination'));
+		  return view('users.index')->with('users', $users);
+	/*
     	$userObj = User::where('id', Auth::id())->first(['is_admin','user_type','referal']);
     	$adminFlag = $userObj->is_admin;
 		$varUserType = $userObj->user_type;
@@ -63,7 +66,7 @@ class HomeController extends Controller
 		}
 		else{
 			
-		}
+		}*/
     }
 	
 
