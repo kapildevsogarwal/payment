@@ -39,7 +39,7 @@
 						<tr>
                             <td width="20%"><strong>Invoice Date</strong></td>
                             <td width="80%"  colspan="3">
-								{{ date(config('constant.date_format', strtotime($purchase->invoice_date))) }}
+								{{ date('M d, Y', strtotime($purchase->invoice_date)) }}
                             </td>
 							
                         </tr>

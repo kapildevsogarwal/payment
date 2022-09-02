@@ -85,14 +85,14 @@
 
         $(document).ready(function(){
             // Delete delivery ticket
-            $('body').on('click', '.delete-party', function(e){
+            $('body').on('click', '.delete-purchase', function(e){
                 e.preventDefault();
 
                 var dataUrl = $(this).data('url');
 
                 // Remove delivery ticket
                 swal.fire({
-                    title: 'Permanently delete this party information?',
+                    title: 'Permanently delete this purchase detail information?',
                     text: "This cannot be undone!",
                     type: 'warning',
                     showCancelButton: true,

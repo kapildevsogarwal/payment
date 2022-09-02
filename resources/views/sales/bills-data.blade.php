@@ -6,8 +6,12 @@
                     {{ $bill->invoice_no }}    
                 </a>
             </td>
-            <td>{{ date(config('constant.date_format', strtotime($bill->invoice_date))) }}</td>
-            <td>{{ $bill->party_name }}</td>
+            <td>{{ date('M d, Y', strtotime($bill->invoice_date)) }}</td>
+            <td>
+				<a href="{{ route('party.show', [$bill->party_id]) }}" title="View">
+						{{ $bill->party_name }}
+				</a>
+			</td>
             <td>{{ ($bill->created_at)?date('d M, Y h:i:sa', strtotime($bill->created_at)):'' }}  </td>
             <td class="action-icons">
                 <a href="{{ route('sales.show', [$bill->id]) }}" title="View Detail" class="btn btn-success action-tooltip">

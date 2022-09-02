@@ -137,13 +137,13 @@ class PurchaseController extends Controller
         DB::beginTransaction();
         try {
             // to delete the docus sign related record
-            $objDelete = Sale::where('id', '=', $id)->delete();
+            $objDelete = Purchase::where('id', '=', $id)->delete();
             DB::commit();
             return response()->json([
                 'status' => 'success',
                 'payload' => [
                     'message' => 'Your request has been completed successfully!',
-                    'url' => route('sales.index')
+                    'url' => route('purchase.index')
                 ]
             ], 200);
         }
@@ -154,7 +154,7 @@ class PurchaseController extends Controller
                 'status' => 'failure',
                 'payload' => [
                     'message' => 'Your request not completed!',
-                    'url' => route('sales.index')
+                    'url' => route('purchase.index')
                 ]
             ], 200);
         }
