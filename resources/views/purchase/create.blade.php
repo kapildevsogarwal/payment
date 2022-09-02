@@ -1,14 +1,14 @@
 {{-- resources/views/adminlte/roles/create.blade.php --}}
 @extends('layouts.user')
 
-@section('pageTitle', 'Create Bills')
+@section('pageTitle', 'Create Purchase Bills')
 
 @section('content')
 
 
     <div class="row">
         <div class="col-xs-12 mb-2">
-            <a href="{{ route('party.index') }}" class="btn btn-primary pull-right"><i class="fa fa-list mr-1"></i>List Party</a>
+            <a href="{{ route('purchase.index') }}" class="btn btn-primary pull-right"><i class="fa fa-list mr-1"></i>List Purchase Bills</a>
         </div>
     </div>
 
@@ -20,7 +20,7 @@
                 <h3 class="box-title">Create Bills</h3>
             </div>
             
-            {{ Form::open(['route' => 'sales.store', 'class' => 'form-horizontal', 'name' => 'add_form']) }}
+            {{ Form::open(['route' => 'purchase.store', 'class' => 'form-horizontal', 'name' => 'add_form']) }}
 				<input type="hidden" value="{{(old('party_id'))?old('party_id'):''}}" id="party_id" name="party_id" />
                 <div class="box-body">
                     <div class="form-group @error('invoice_no') has-error @enderror">
@@ -94,7 +94,7 @@
 					
 					<div class="form-group @error('net_amount') has-error @enderror">
 						<label for="net_amount" class="col-sm-2 control-label">Net Amount</label>
-						<div class="col-sm-10">
+						<div class="col-sm-4">
 							{{ Form::text('net_amount', (old('net_amount'))?old('net_amount'):'' , ['class' => 'form-control allow_decimal', 'id' => 'net_amount', 'placeholder' => 'Net Amount']) }}
 							@error('net_amount')
 							<span class="help-block" role="alert">
@@ -104,38 +104,29 @@
 						</div>
 					</div>
 					
-					<div class="form-group @error('igst_percent') has-error @enderror">
+					<div class="form-group @error('igst_total') has-error @enderror">
 						<label for="igst_percent" class="col-sm-2 control-label">IGST</label>
 						<div class="col-sm-4">
-							{{ Form::text('igst_percent', old('igst_percent')!='' ? old('igst_percent') : '', ['class' => 'form-control  allow_decimal', 'id' => 'igst_percent', 'placeholder' => '%', 'autocomplete' => 'off', 'readonly'=>'true']) }}
-						</div>
-						<label for="igst_total" class="col-sm-1 control-label">IGST Total</label>
-						<div class="col-sm-5">
-							{{ Form::text('igst_total', old('igst_total')!='' ? old('igst_total') : '', ['class' => 'form-control ', 'id' => 'igst_total', 'placeholder' => '', 'autocomplete' => 'off', 'readonly'=>'true']) }}
+							{{ Form::text('igst_total', old('igst_total')!='' ? old('igst_total') : '', ['class' => 'form-control allow_decimal', 'id' => 'igst_total', 'placeholder' => 'IGST Amount', 'autocomplete' => 'off']) }}
 						</div>
 					</div>
 					
-					<div class="form-group @error('ca_gst_percent') has-error @enderror">
-						<label for="ca_gst_percent" class="col-sm-2 control-label">CAGST</label>
+					<div class="form-group @error('igst_total') has-error @enderror">
+						<label for="igst_percent" class="col-sm-2 control-label">CAGST</label>
 						<div class="col-sm-4">
-							{{ Form::text('ca_gst_percent', old('ca_gst_percent')!='' ? old('ca_gst_percent') : '', ['class' => 'form-control  allow_decimal', 'id' => 'ca_gst_percent', 'placeholder' => '%', 'autocomplete' => 'off', 'readonly'=>'true']) }}
-						</div>
-						<label for="ca_gst_total" class="col-sm-1 control-label">CAGST Total</label>
-						<div class="col-sm-5">
-							{{ Form::text('ca_gst_total', old('ca_gst_total')!='' ? old('ca_gst_total') : '', ['class' => 'form-control ', 'id' => 'ca_gst_total', 'placeholder' => '', 'autocomplete' => 'off','readonly'=>'true']) }}
+							{{ Form::text('ca_gst_total', old('ca_gst_total')!='' ? old('ca_gst_total') : '', ['class' => 'form-control allow_decimal', 'id' => 'ca_gst_total', 'placeholder' => 'CAGST Amount', 'autocomplete' => 'off']) }}
 						</div>
 					</div>
 					
-					<div class="form-group @error('sgst_percent') has-error @enderror">
-						<label for="sgst_percent" class="col-sm-2 control-label">SGST</label>
+					<div class="form-group @error('sgst_total') has-error @enderror">
+						<label for="igst_percent" class="col-sm-2 control-label">SGST</label>
 						<div class="col-sm-4">
-							{{ Form::text('sgst_percent', old('sgst_percent')!='' ? old('sgst_percent') : '', ['class' => 'form-control  allow_decimal', 'id' => 'sgst_percent', 'placeholder' => '%', 'autocomplete' => 'off', 'readonly'=>'true']) }}
-						</div>
-						<label for="sgst_total" class="col-sm-1 control-label">CAGST Total</label>
-						<div class="col-sm-5">
-							{{ Form::text('sgst_total', old('sgst_total')!='' ? old('sgst_total') : '', ['class' => 'form-control ', 'id' => 'sgst_total', 'placeholder' => '', 'autocomplete' => 'off','readonly'=>'true']) }}
+							{{ Form::text('sgst_total', old('sgst_total')!='' ? old('sgst_total') : '', ['class' => 'form-control allow_decimal', 'id' => 'sgst_total', 'placeholder' => 'SGST Amount', 'autocomplete' => 'off']) }}
 						</div>
 					</div>
+					
+					
+					
 					 <div class="form-group @error('total_amount') has-error @enderror">
                         <label for="total_amount" class="col-sm-2 control-label">Total Amount</label>
                         <div class="col-sm-10">
@@ -200,5 +191,5 @@
             });
         });
     </script>
-    @include('sales._footer')
+    @include('purchase._footer')
 @endsection

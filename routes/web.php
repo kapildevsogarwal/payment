@@ -40,6 +40,10 @@ Route::resource('users', UserController::class);
 Route::get('sales/saleslist', 'SalesController@tests');
 Route::resource('sales', SalesController::class);
 
+
+Route::resource('purchase', PurchaseController::class);
+
+
 Route::get('/profile', [App\Http\Controllers\HomeController::class, 'profile'])->name('profile');
 
 Route::get('home/', 'UserController@index');
