@@ -30,6 +30,30 @@
 					<a href="{{ url('/purchase') }}"><i class="fa fa-shopping-cart"></i> <span>Purchase</span></a>
 				</li>
 				<li class="treeview  @if(
+                        Request::is('inward') || Request::is('inward/*')
+                        || Request::is('outward') || Request::is('outward/*')
+						|| Request::is('overview') || Request::is('overview/*')
+                    ) active menu-open @endif">
+                    <a href="#">
+                        <i class="fas fa-rupee-sign"></i> <span>Tax Manager</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" >
+						<li @if(Request::is('inward') || Request::is('inward/*')) class="active" @endif>
+							<a href="{{ route('inward.index') }}"><i class="fa fa-circle-o"></i>  Inward Tax</a>
+						</li>
+						<li @if(Request::is('outward') || Request::is('outward/*')) class="active" @endif>
+							<a href="{{ route('outward.index') }}"><i class="fa fa-circle-o"></i>  Outward Tax</a>
+						</li>
+						  <li @if(Request::is('overview') || Request::is('overview/*')) class="active" @endif>
+							<a href="{{ route('overview.index') }}"><i class="fa fa-circle-o"></i>  Overview</a>
+						</li>
+                    </ul>
+                </li>
+				
+				<li class="treeview  @if(
                         Request::is('roles') || Request::is('roles/*')
                         || Request::is('permissions') || Request::is('permissions/*')
                     ) active menu-open @endif">

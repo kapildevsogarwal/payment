@@ -36,6 +36,15 @@ Route::resource('permissions', PermissionController::class);
 
 Route::resource('users', UserController::class);
 
+Route::get('inward/get-month-purchase-total', 'InwardTaxController@getMonthPurchaseTotal');
+Route::resource('inward', InwardTaxController::class);
+
+Route::get('outward/get-month-sales-total', 'OutwardTaxController@getMonthSalesBillTotal');
+Route::resource('outward', OutwardTaxController::class);
+
+Route::get('overview/get-month-overview-total', 'OverviewTaxController@getMonthOverviewTotal');
+Route::resource('overview', OverviewTaxController::class);
+
 
 Route::get('sales/saleslist', 'SalesController@tests');
 Route::resource('sales', SalesController::class);
